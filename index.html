@@ -2181,6 +2181,32 @@ css
     </div>
 
     <script>
+        // ===== 과목 표시 순서 (고1) — 과목이 바뀌면 여기만 수정 =====
+        var SUBJECT_ORDER = [
+            '독서(인문)', '독서(사회)', '독서(과학)',
+            '문학(현대소설)', '문학(현대시)', '문학(고전소설)', '문학(고전시가)',
+            '문법', '화법', '작문'
+        ];
+        var SUBJECT_ALIASES = {
+            '독서(인문)': ['독서(인문)', '독서인문', '인문'],
+            '독서(사회)': ['독서(사회)', '독서사회', '사회'],
+            '독서(과학)': ['독서(과학)', '독서과학', '과학'],
+            '문학(현대소설)': ['문학(현대소설)', '문학현대소설', '현대소설', '현소'],
+            '문학(현대시)': ['문학(현대시)', '문학현대시', '현대시', '현시'],
+            '문학(고전소설)': ['문학(고전소설)', '문학고전소설', '고전소설', '고소'],
+            '문학(고전시가)': ['문학(고전시가)', '문학고전시가', '고전시가', '고시'],
+            '문법': ['문법'],
+            '화법': ['화법'],
+            '작문': ['작문']
+        };
+        // 엑셀 과목명을 표준 과목명으로 (정확히 일치하는 별칭만)
+        function normalizeSubjectName(name) {
+            for (var key in SUBJECT_ALIASES) {
+                if (SUBJECT_ALIASES[key].indexOf(name) !== -1) return key;
+            }
+            return name;
+        }
+
 
 
 // 🆕 정동민국어논술학원 실제 구글드라이브 학습 자료 링크 데이터베이스 (고1용)
@@ -2221,14 +2247,14 @@ var studyMaterialsDB = {
         "기본": [
             {
                 name: "독서 과학 기초",
-                url: "https://drive.google.com/file/d/1gcElUHAEJ6aa0aiV53HoBNd7DXc5GZah/view?usp=drive_link",
+                url: "https://drive.google.com/file/d/bc1qhs69hfm7fj5sjxcltf6xa26m37llpy5wz5geny/view?usp=drive_link",
                 description: "과학 지문 기초 실력 다지기"
             }
         ],
         "심화": [
             {
                 name: "독서 과학 심화",
-                url: "https://drive.google.com/file/d/1aMlCh4f4xCyR81oDdHweBzauGlNh5hCB/view?usp=drive_link",
+                url: "https://drive.google.com/file/d/bc1qhs69hfm7fj5sjxcltf6xa26m37llpy5wz5geny/view?usp=drive_link",
                 description: "과학 지문 고난도 문제 완전 정복"
             }
         ]
@@ -2286,7 +2312,7 @@ var studyMaterialsDB = {
         "심화": [
             {
                 name: "문학 고전소설 심화",
-                url: "https://drive.google.com/file/d/1qHvAH6fVK0LNzjG28TAiUw5XAv-crO1c/view?usp=drive_link",
+                url: "https://drive.google.com/file/d/bc1qhs69hfm7fj5sjxcltf6xa26m37llpy5wz5geny-crO1c/view?usp=drive_link",
                 description: "고전소설 고난도 문제 완전 정복"
             }
         ]
@@ -3582,24 +3608,10 @@ if (scores.length >= 3) {
    // 12. 과목별 마스터 뱃지 (9개 + 3개 종합)
     var subjectMasters = [];
     
-    var koreanSubjects = [
-        '독서(인문,독서론)', '독서(사회)', '독서(과학)',
-        '문학(현대시)', '문학(현대소설)', '문학(고전시가)', '문학(고전소설)',
-        '언어 화법', '매체 작문'
-    ];
+    var koreanSubjects = SUBJECT_ORDER;
     
     koreanSubjects.forEach(function(targetSubject) {
-        var subjectMapping = {
-            '독서(인문,독서론)': ['독서(인문,독서론)', '독서(인문 이론)', '독서(인문이론)', '독서인문', '인문'],
-            '독서(사회)': ['독서(사회)', '독서사회', '사회'],
-            '독서(과학)': ['독서(과학)', '독서과학', '과학'],
-            '문학(현대시)': ['문학(현대시)', '문학현대시', '현대시', '현시'],
-            '문학(현대소설)': ['문학(현대소설)', '문학현대소설', '현대소설', '현소'],
-            '문학(고전시가)': ['문학(고전시가)', '문학고전시가', '고전시가', '고시'],
-            '문학(고전소설)': ['문학(고전소설)', '문학고전소설', '고전소설', '고소'],
-            '언어 화법': ['언어 화법', '언어화법', '화법'],
-            '매체 작문': ['매체 작문', '매체작문', '작문']
-        };
+        var subjectMapping = SUBJECT_ALIASES;
         
         var possibleNames = subjectMapping[targetSubject] || [targetSubject];
         var matchedSubject = null;
@@ -3651,7 +3663,7 @@ if (scores.length >= 3) {
     if (subjectMasters.length >= 5) {
         badges.push({ icon: "📚", text: "국어 마에스트로", type: "subject-master", isNew: true });
     }
-    if (subjectMasters.length >= 9) {
+    if (subjectMasters.length >= SUBJECT_ORDER.length) {
         badges.push({ icon: "👑", text: "국어 레전더리", type: "subject-master", isNew: true });
     }
     
@@ -3711,20 +3723,21 @@ var badgeDescriptions = {
     "꾸준한 상승세": "전체적으로 꾸준한 상승세를 보이며 성장하고 있습니다.",
     
     // 고1 과목별 마스터 뱃지
-    "독서(인문,독서론) 마스터": "독서(인문,독서론) 영역에서 최근 4회 연속 만점! 완벽한 마스터입니다.",
+    "독서(인문) 마스터": "독서(인문) 영역에서 최근 4회 연속 만점! 인문 지문 독해력이 완벽합니다.",
     "독서(사회) 마스터": "독서(사회) 영역 최근 4회 연속 만점! 사회 현상 이해력이 우수합니다.",
     "독서(과학) 마스터": "독서(과학) 영역 최근 4회 연속 만점! 과학적 사고력이 탁월합니다.",
-    "문학(현대시) 마스터": "현대시 영역 최근 4회 연속 만점! 시적 감수성이 뛰어납니다.",
     "문학(현대소설) 마스터": "현대소설 영역 최근 4회 연속 만점! 서사 이해력이 완벽합니다.",
-    "문학(고전시가) 마스터": "고전시가 영역 최근 4회 연속 만점! 고전 문학의 진수를 이해했습니다.",
+    "문학(현대시) 마스터": "현대시 영역 최근 4회 연속 만점! 시적 감수성이 뛰어납니다.",
     "문학(고전소설) 마스터": "고전소설 영역 최근 4회 연속 만점! 고전 서사의 대가입니다.",
-    "언어 화법 마스터": "언어 화법 영역에서 최근 4회 연속 만점! 의사소통의 달인입니다.",
-    "매체 작문 마스터": "매체 작문 영역에서 최근 4회 연속 만점! 현대적 소통의 전문가입니다.",
+    "문학(고전시가) 마스터": "고전시가 영역 최근 4회 연속 만점! 고전 문학의 진수를 이해했습니다.",
+    "문법 마스터": "문법 영역 최근 4회 연속 만점! 국어 문법 원리를 완벽히 이해했습니다.",
+    "화법 마스터": "화법 영역 최근 4회 연속 만점! 의사소통의 달인입니다.",
+    "작문 마스터": "작문 영역 최근 4회 연속 만점! 글쓰기 전략을 완벽히 파악했습니다.",
     
     // 종합 뱃지
     "국어 올라운더": "3개 이상의 과목에서 마스터 달성! 국어의 다양한 영역에 능통합니다.",
     "국어 마에스트로": "5개 이상의 과목에서 마스터 달성! 국어 실력이 대가 수준입니다.",
-    "국어 레전더리": "모든 9개 과목에서 마스터 달성! 국어계의 전설이 되었습니다!"
+    "국어 레전더리": "모든 10개 과목에서 마스터 달성! 국어계의 전설이 되었습니다!"
 };
 
         // 툴팁 관리 변수
@@ -4234,22 +4247,11 @@ function performAIAnalysis(student) {
         var normalizedRatios = {};
         var normalizedScores = {};
         Object.keys(subjectRatios).forEach(function(key) {
-            var normalized = key
-                .replace(/^언어화법$/, '언어 화법')
-                .replace(/^매체작문$/, '매체 작문')
-                .replace(/^독서인문$/, '독서(인문,독서론)')
-                .replace(/^독서사회$/, '독서(사회)')
-                .replace(/^독서과학$/, '독서(과학)')
-                .replace(/^현대시$/, '문학(현대시)')
-                .replace(/^현대소설$/, '문학(현대소설)')
-                .replace(/^고전시가$/, '문학(고전시가)')
-                .replace(/^고전소설$/, '문학(고전소설)');
+            var normalized = normalizeSubjectName(key);
             normalizedRatios[normalized] = subjectRatios[key];
         });
         Object.keys(subjectScores).forEach(function(key) {
-            var normalized = key
-                .replace(/^언어화법$/, '언어 화법')
-                .replace(/^매체작문$/, '매체 작문');
+            var normalized = normalizeSubjectName(key);
             normalizedScores[normalized] = subjectScores[key];
         });
         subjectRatios = normalizedRatios;
@@ -5970,15 +5972,9 @@ if (!testGrade) {
     tableHtml += '<th style="min-width: 60px; font-size: 0.8em;">시험</th>';
     tableHtml += '<th style="min-width: 40px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.1);" onclick="openScoreGraphClick(\'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">점수 📊</th>';
     tableHtml += '<th style="min-width: 40px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(239, 68, 68, 0.1);" onclick="openGradeGraphClick(\'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">등급 📊</th>';
-    tableHtml += '<th style="min-width: 65px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'독서(인문,독서론)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">인문,독서론 📊</th>';
-    tableHtml += '<th style="min-width: 50px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'독서(사회)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">사회 📊</th>';
-    tableHtml += '<th style="min-width: 50px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'독서(과학)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">과학 📊</th>';
-    tableHtml += '<th style="min-width: 55px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'문학(현대시)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">현대시 📊</th>';
-    tableHtml += '<th style="min-width: 55px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'문학(현대소설)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">현대소설 📊</th>';
-    tableHtml += '<th style="min-width: 55px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'문학(고전시가)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">고전시가 📊</th>';
-    tableHtml += '<th style="min-width: 55px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'문학(고전소설)\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">고전소설 📊</th>';
-    tableHtml += '<th style="min-width: 50px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'언어 화법\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">언어화법 📊</th>';
-    tableHtml += '<th style="min-width: 50px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'매체 작문\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">매체작문 📊</th>';
+    SUBJECT_ORDER.forEach(function(subj) {
+        tableHtml += '<th style="min-width: 60px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'' + subj + '\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">' + subj + ' 📊</th>';
+    });
     tableHtml += '</tr></thead><tbody>';
     
 // ⭐ 데이터 그룹화 ⭐
@@ -6090,23 +6086,11 @@ group.tests.forEach(function(test) {
         tableHtml += '<td class="grade-cell grade-' + avgGrade + '" style="font-size: 0.85em;">' + avgGrade + '</td>';
         
         // 과목별 평균 성취도
-        var subjectOrder = ['독서(인문,독서론)', '독서(사회)', '독서(과학)', 
-                           '문학(현대시)', '문학(현대소설)', '문학(고전시가)', '문학(고전소설)',
-                           '언어 화법', '매체 작문'];
+        var subjectOrder = SUBJECT_ORDER;
         
         for (var s = 0; s < subjectOrder.length; s++) {
             var targetSubject = subjectOrder[s];
-            var subjectMapping = {
-                '독서(인문,독서론)': ['독서(인문,독서론)', '독서(인문 이론)', '독서(인문이론)', '독서인문', '인문'],
-                '독서(사회)': ['독서(사회)', '독서사회', '사회'],
-                '독서(과학)': ['독서(과학)', '독서과학', '과학'],
-                '문학(현대시)': ['문학(현대시)', '문학현대시', '현대시', '현시'],
-                '문학(현대소설)': ['문학(현대소설)', '문학현대소설', '현대소설', '현소'],
-                '문학(고전시가)': ['문학(고전시가)', '문학고전시가', '고전시가', '고시'],
-                '문학(고전소설)': ['문학(고전소설)', '문학고전소설', '고전소설', '고소'],
-                '언어 화법': ['언어 화법', '언어화법', '화법'],
-                '매체 작문': ['매체 작문', '매체작문', '작문']
-            };
+            var subjectMapping = SUBJECT_ALIASES;
             
             var possibleNames = subjectMapping[targetSubject] || [targetSubject];
             
@@ -6535,17 +6519,7 @@ function openSubjectGraph(subjectName, studentData, event) {
     console.log('📊 그래프 열기:', subjectName);
     
     // 과목명 매핑
-    var subjectMapping = {
-        '독서(인문,독서론)': ['독서(인문,독서론)', '독서(인문 이론)', '독서(인문이론)', '독서인문', '인문'],
-        '독서(사회)': ['독서(사회)', '독서사회', '사회'],
-        '독서(과학)': ['독서(과학)', '독서과학', '과학'],
-        '문학(현대시)': ['문학(현대시)', '문학현대시', '현대시', '현시'],
-        '문학(현대소설)': ['문학(현대소설)', '문학현대소설', '현대소설', '현소'],
-        '문학(고전시가)': ['문학(고전시가)', '문학고전시가', '고전시가', '고시'],
-        '문학(고전소설)': ['문학(고전소설)', '문학고전소설', '고전소설', '고소'],
-        '언어 화법': ['언어 화법', '언어화법', '화법'],
-        '매체 작문': ['매체 작문', '매체작문', '작문']
-    };
+    var subjectMapping = SUBJECT_ALIASES;
     
     var possibleNames = subjectMapping[subjectName] || [subjectName];
     
@@ -6967,17 +6941,7 @@ function openSubjectGraphClick(subjectName, attendanceNumber) {
     }
     
     // 과목명 매핑
-    var subjectMapping = {
-        '독서(인문,독서론)': ['독서(인문,독서론)', '독서(인문 이론)', '독서(인문이론)', '독서인문', '인문'],
-        '독서(사회)': ['독서(사회)', '독서사회', '사회'],
-        '독서(과학)': ['독서(과학)', '독서과학', '과학'],
-        '문학(현대시)': ['문학(현대시)', '문학현대시', '현대시', '현시'],
-        '문학(현대소설)': ['문학(현대소설)', '문학현대소설', '현대소설', '현소'],
-        '문학(고전시가)': ['문학(고전시가)', '문학고전시가', '고전시가', '고시'],
-        '문학(고전소설)': ['문학(고전소설)', '문학고전소설', '고전소설', '고소'],
-        '언어 화법': ['언어 화법', '언어화법', '화법'],
-        '매체 작문': ['매체 작문', '매체작문', '작문']
-    };
+    var subjectMapping = SUBJECT_ALIASES;
     
     var possibleNames = subjectMapping[subjectName] || [subjectName];
     
