@@ -14,7 +14,19 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --red: #D4271C;      /* 강조·핵심 숫자·현재 탭 */
+            --ink: #141414;      /* 글자·선 */
+            --gray: #8C8C8C;     /* 보조 글자 */
+            --line: #D9D9D9;     /* 가는 구분선 */
+            --track: #EFEFEF;    /* 막대 바탕 */
+            --paper: #FFFFFF;
+            --font: 'Nanum Gothic', 'NanumGothic', 'Apple SD Gothic Neo', sans-serif;
+            --thin: 400;         /* 큰 숫자 굵기 (나눔고딕 웹폰트의 가장 가는 굵기) */
+        }
+
         * {
     margin: 0;
     padding: 0;
@@ -23,15 +35,15 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: transparent;
             min-height: 100vh;
             padding: 20px;
         }
         
         .container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 0;
+            box-shadow: none;
             padding: 40px;
             max-width: 1200px;
             margin: 0 auto;
@@ -39,8 +51,8 @@
 
 /* 테이블 헤더 호버 효과 */
 .grade-table th[onclick]:hover {
-    background: rgba(102, 126, 234, 0.2) !important;
-    transform: scale(1.05);
+    background: transparent !important;
+    transform: none;
 }
         
         .header {
@@ -49,20 +61,20 @@
         }
         
         .header h1 {
-            color: #333;
+            color: #141414;
             font-size: 2.5em;
             margin-bottom: 10px;
         }
         
         .header p {
-            color: #666;
+            color: #8C8C8C;
             font-size: 1.1em;
         }
         
         .tab-container {
             display: flex;
             margin-bottom: 30px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 2px solid #EFEFEF;
         }
         
         .tab {
@@ -71,14 +83,14 @@
             border: none;
             background: none;
             font-size: 1.1em;
-            color: #666;
+            color: #8C8C8C;
             border-bottom: 3px solid transparent;
             transition: all 0.3s;
         }
         
         .tab.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
+            color: #141414;
+            border-bottom-color: #141414;
             font-weight: bold;
         }
         
@@ -92,9 +104,9 @@
         
         /* AI 분석 관련 스타일 */
         .ai-analysis {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
+            background: transparent;
+            color: var(--ink);
+            border-radius: 0;
             padding: 15px;
             margin: 15px 0;
             position: relative;
@@ -125,12 +137,12 @@
             width: 35px;
             height: 35px;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: none;
         }
         
         .ai-analysis h3 {
@@ -152,9 +164,9 @@
         
         .analysis-card {
             background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
+            border-radius: 0;
             padding: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: none;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
@@ -166,13 +178,13 @@
             gap: 8px;
         }
         
-        .trend-up { color: #4ade80; }
-        .trend-down { color: #f87171; }
-        .trend-stable { color: #fbbf24; }
+        .trend-up { color: #141414; }
+        .trend-down { color: #D4271C; }
+        .trend-stable { color: #141414; }
         
         .progress-bar-container {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
+            border-radius: 0;
             height: 8px;
             margin: 8px 0;
             overflow: hidden;
@@ -180,15 +192,15 @@
         
         .progress-bar-fill {
             height: 100%;
-            border-radius: 10px;
+            border-radius: 0;
             transition: width 0.3s ease;
         }
         
-        .grade-excellent { background: #ef4444; }
-        .grade-good { background: #f97316; }
-        .grade-average { background: #eab308; }
-        .grade-needs-improvement { background: #06b6d4; }
-        .grade-poor { background: #8b5cf6; }
+        .grade-excellent { background: #D4271C; }
+        .grade-good { background: #141414; }
+        .grade-average { background: #141414; }
+        .grade-needs-improvement { background: #141414; }
+        .grade-poor { background: #141414; }
         
         .ai-loading {
             display: flex;
@@ -220,20 +232,20 @@
         
         .ai-recommendations {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 0;
             padding: 20px;
             margin-top: 20px;
-            border-left: 4px solid #10b981;
+            border-left: 3px solid #141414;
         }
         
         .ai-recommendations h4 {
             margin-bottom: 15px;
-            color: #10b981;
+            color: #141414;
         }
         
         .recommendation-item {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 0;
             padding: 12px;
             margin: 8px 0;
             border-left: 3px solid rgba(255, 255, 255, 0.5);
@@ -248,15 +260,15 @@
         /* 새로운 구체적 등급 상승 전략 스타일 */
         .grade-strategy {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 0;
             padding: 20px;
             margin-top: 20px;
-            border-left: 4px solid #4ade80;
+            border-left: 3px solid #141414;
         }
         
         .grade-strategy h4 {
     margin-bottom: 15px;
-    color: #4ade80;
+    color: #141414;
     font-size: 1.3em;
 }
         
@@ -266,7 +278,7 @@
             gap: 10px;
             margin: 15px 0;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 0;
             padding: 15px;
         }
         
@@ -274,7 +286,7 @@
             text-align: center;
             padding: 10px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 0;
         }
         
         .recent-test-name {
@@ -296,7 +308,7 @@
         
         .target-analysis {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 0;
             padding: 15px;
             margin: 15px 0;
         }
@@ -316,13 +328,13 @@
         .target-possibility {
             font-size: 0.85em;
             padding: 4px 8px;
-            border-radius: 12px;
+            border-radius: 0;
             font-weight: bold;
         }
         
-        .possibility-high { background: #10b981; color: white; }
-        .possibility-medium { background: #f59e0b; color: white; }
-        .possibility-low { background: #ef4444; color: white; }
+        .possibility-high { background: #141414; color: white; }
+        .possibility-medium { background: #141414; color: white; }
+        .possibility-low { background: #D4271C; color: white; }
         
         .subject-strategy-list {
             margin: 15px 0;
@@ -330,7 +342,7 @@
         
         .subject-strategy-item {
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 0;
             padding: 12px;
             margin: 8px 0;
             display: flex;
@@ -359,12 +371,12 @@
         .points-gain {
             font-size: 1.1em;
             font-weight: bold;
-            color: #4ade80;
+            color: #141414;
         }
         
         .total-strategy {
             background: rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
+            border-radius: 0;
             padding: 15px;
             margin-top: 15px;
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -380,21 +392,21 @@
         
         /* 기존 스타일들 유지... */
         .admin-check {
-            background: #fff3cd;
-            border-radius: 15px;
+            background: #FFFFFF;
+            border-radius: 0;
             padding: 25px;
             margin-bottom: 25px;
-            border-left: 4px solid #ffc107;
+            border-left: 3px solid #141414;
         }
         
         .admin-check h3 {
-            color: #856404;
+            color: #141414;
             margin-bottom: 15px;
             font-size: 1.3em;
         }
         
         .admin-check p {
-            color: #856404;
+            color: #141414;
             line-height: 1.6;
             margin-bottom: 15px;
         }
@@ -402,18 +414,18 @@
         .admin-password {
             width: 100%;
             padding: 12px;
-            border: 2px solid #ffc107;
-            border-radius: 8px;
+            border: 2px solid #141414;
+            border-radius: 0;
             font-size: 1em;
             margin: 10px 0;
         }
         
         .admin-btn {
-            background: #ffc107;
-            color: #856404;
+            background: #141414;
+            color: #141414;
             border: none;
             padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: 0;
             cursor: pointer;
             font-size: 1em;
             font-weight: bold;
@@ -421,26 +433,26 @@
         }
         
         .admin-btn:hover {
-            background: #e0a800;
+            background: #141414;
         }
         
         .setup-section {
-            background: #e8f2ff;
-            border-radius: 15px;
+            background: #FFFFFF;
+            border-radius: 0;
             padding: 25px;
             margin-bottom: 25px;
-            border-left: 4px solid #667eea;
+            border-left: 3px solid #141414;
             display: none;
         }
         
         .setup-section h3 {
-            color: #333;
+            color: #141414;
             margin-bottom: 15px;
             font-size: 1.3em;
         }
         
         .setup-section p {
-            color: #666;
+            color: #8C8C8C;
             line-height: 1.6;
             margin-bottom: 10px;
         }
@@ -448,18 +460,18 @@
         .setup-input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #667eea;
-            border-radius: 8px;
+            border: 2px solid #141414;
+            border-radius: 0;
             font-size: 1em;
             margin: 10px 0;
         }
         
         .setup-btn {
-            background: #667eea;
+            background: #141414;
             color: white;
             border: none;
             padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: 0;
             cursor: pointer;
             font-size: 1em;
             font-weight: bold;
@@ -467,83 +479,83 @@
         }
         
         .upload-area {
-            border: 3px dashed #ccc;
-            border-radius: 15px;
+            border: 3px dashed #D9D9D9;
+            border-radius: 0;
             padding: 40px;
             text-align: center;
             margin: 20px 0;
-            background: #f9f9f9;
+            background: #FFFFFF;
             transition: all 0.3s;
         }
         
         .upload-area.dragover {
-            border-color: #667eea;
-            background: #e8f2ff;
+            border-color: #141414;
+            background: #FFFFFF;
         }
         
         .upload-btn {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+            background: transparent;
+            color: var(--ink);
             border: none;
             padding: 12px 30px;
-            border-radius: 25px;
+            border-radius: 0;
             cursor: pointer;
             font-size: 1em;
             margin: 5px;
         }
         
         .upload-btn:disabled {
-            background: #ccc;
+            background: #D9D9D9;
             cursor: not-allowed;
         }
         
         .progress {
             margin: 20px 0;
-            background: #e0e0e0;
-            border-radius: 10px;
+            background: #D9D9D9;
+            border-radius: 0;
             overflow: hidden;
             display: none;
         }
         
         .progress-bar {
             height: 25px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: transparent;
             width: 0%;
             transition: width 0.3s;
             text-align: center;
             line-height: 25px;
-            color: white;
+            color: var(--ink);
             font-weight: bold;
         }
         
         .status {
             margin: 20px 0;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 0;
             display: none;
         }
         
         .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #FFFFFF;
+            color: #141414;
+            border: 1px solid #D9D9D9;
         }
         
         .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #FFFFFF;
+            color: #D4271C;
+            border: 1px solid #FFFFFF;
         }
         
         .status.warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
+            background: #FFFFFF;
+            color: #141414;
+            border: 1px solid #D9D9D9;
         }
         
         .data-summary {
-            background: #f8f9fa;
-            border-radius: 10px;
+            background: #FFFFFF;
+            border-radius: 0;
             padding: 20px;
             margin: 20px 0;
             display: none;
@@ -558,19 +570,19 @@
         .summary-item {
             background: white;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 0;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: none;
         }
         
         .summary-value {
             font-size: 1.5em;
             font-weight: bold;
-            color: #667eea;
+            color: #141414;
         }
         
         .summary-label {
-            color: #666;
+            color: #8C8C8C;
             margin-top: 5px;
         }
         
@@ -587,78 +599,78 @@
         .search-input {
             flex: 1;
             padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            border: 2px solid #D9D9D9;
+            border-radius: 0;
             font-size: 1.1em;
             transition: border-color 0.3s;
         }
         
         .search-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #141414;
         }
         
         .search-btn {
             padding: 15px 30px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+            background: transparent;
+            color: var(--ink);
             border: none;
-            border-radius: 10px;
+            border-radius: 0;
             cursor: pointer;
             font-size: 1.1em;
         }
         
         .search-btn:disabled {
-            background: #ccc;
+            background: #D9D9D9;
             cursor: not-allowed;
         }
         
         .instructions {
-            background: #e8f2ff;
-            border-radius: 15px;
+            background: #FFFFFF;
+            border-radius: 0;
             padding: 25px;
             margin-bottom: 25px;
-            border-left: 4px solid #667eea;
+            border-left: 3px solid #141414;
         }
         
         .instructions h3 {
-            color: #333;
+            color: #141414;
             margin-bottom: 15px;
             font-size: 1.3em;
         }
         
         .instructions p {
-            color: #666;
+            color: #8C8C8C;
             line-height: 1.6;
             margin-bottom: 10px;
         }
         
         .student-info {
-            background: #e8f2ff;
-            border-radius: 15px;
+            background: #FFFFFF;
+            border-radius: 0;
             padding: 25px;
             margin: 25px 0;
-            border-left: 5px solid #667eea;
+            border-left: 3px solid #141414;
         }
         
         .student-info h2 {
-            color: #333;
+            color: #141414;
             margin-bottom: 15px;
             font-size: 1.6em;
         }
         
         .summary-table {
             background: white;
-            border-radius: 15px;
+            border-radius: 0;
             padding: 25px;
             margin: 25px 0;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-left: 5px solid #667eea;
+            box-shadow: none;
+            border-left: 3px solid #141414;
             overflow-x: auto;
         }
         
         .summary-table h3 {
-            color: #333;
+            color: #141414;
             margin-bottom: 20px;
             font-size: 1.4em;
         }
@@ -670,27 +682,27 @@
         }
         
         .grade-table th {
-            background: #f8f9fa;
-            color: #333;
+            background: #FFFFFF;
+            color: #141414;
             font-weight: bold;
             padding: 12px 8px;
             text-align: center;
-            border: 1px solid #dee2e6;
+            border: 1px solid #FFFFFF;
         }
         
         .grade-table td {
             padding: 10px 8px;
             text-align: center;
-            border: 1px solid #dee2e6;
+            border: 1px solid #FFFFFF;
         }
         
         .grade-table tr:nth-child(even) {
-            background: #f8f9fa;
+            background: #FFFFFF;
         }
         
         .test-name {
             font-weight: bold;
-            color: #667eea;
+            color: #141414;
             text-align: left !important;
             min-width: 80px;
         }
@@ -702,17 +714,17 @@
         
         .score-cell {
             font-weight: bold;
-            color: #333;
+            color: #141414;
         }
         
         .absent-cell {
-            color: #999;
+            color: #8C8C8C;
             font-style: italic;
         }
         
         .source-cell {
             font-size: 0.8em;
-            color: #666;
+            color: #8C8C8C;
         }
         
         .grade-cards {
@@ -723,14 +735,14 @@
         
         .grade-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 0;
             padding: 25px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-left: 5px solid #667eea;
+            box-shadow: none;
+            border-left: 3px solid #141414;
         }
         
         .grade-card h3 {
-            color: #333;
+            color: #141414;
             margin-bottom: 20px;
             font-size: 1.4em;
         }
@@ -741,8 +753,8 @@
             gap: 15px;
             margin-bottom: 20px;
             padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            background: #FFFFFF;
+            border-radius: 0;
         }
         
         .grade-summary-item {
@@ -757,7 +769,7 @@
         
         .grade-summary-label {
             font-size: 0.9em;
-            color: #666;
+            color: #8C8C8C;
         }
         
         .grade-details {
@@ -771,37 +783,37 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 3px solid #667eea;
+            background: #FFFFFF;
+            border-radius: 0;
+            border-left: 3px solid #141414;
         }
         
         .grade-label {
-            color: #555;
+            color: #8C8C8C;
             font-weight: 500;
             font-size: 0.9em;
         }
         
         .grade-value {
             font-weight: bold;
-            color: #333;
+            color: #141414;
         }
         
-        .grade-1 { color: #e74c3c; }
-        .grade-2 { color: #f39c12; }
-        .grade-3 { color: #f1c40f; }
-        .grade-4 { color: #2ecc71; }
-        .grade-5 { color: #3498db; }
-        .grade-6 { color: #9b59b6; }
+        .grade-1 { color: #D4271C; }
+        .grade-2 { color: #141414; }
+        .grade-3 { color: #141414; }
+        .grade-4 { color: #141414; }
+        .grade-5 { color: #141414; }
+        .grade-6 { color: #141414; }
         
         .no-results, .no-data {
             text-align: center;
-            color: #666;
+            color: #8C8C8C;
             font-size: 1.2em;
             margin-top: 40px;
             padding: 40px;
-            background: #f8f9fa;
-            border-radius: 15px;
+            background: #FFFFFF;
+            border-radius: 0;
         }
 
 
@@ -983,14 +995,14 @@
         
         .dashboard-card {
             background: white;
-            border-radius: 15px;
+            border-radius: 0;
             padding: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-left: 5px solid #667eea;
+            box-shadow: none;
+            border-left: 3px solid #141414;
         }
         
         .dashboard-card h3 {
-            color: #333;
+            color: #141414;
             margin-bottom: 15px;
             font-size: 1.3em;
             display: flex;
@@ -1003,29 +1015,29 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #EFEFEF;
         }
         
         .stat-label {
-            color: #666;
+            color: #8C8C8C;
             font-size: 0.95em;
         }
         
         .stat-value {
             font-weight: bold;
-            color: #333;
+            color: #141414;
             font-size: 1.1em;
         }
         
-        .stat-positive { color: #10b981; }
-        .stat-negative { color: #ef4444; }
-        .stat-neutral { color: #6b7280; }
+        .stat-positive { color: #141414; }
+        .stat-negative { color: #D4271C; }
+        .stat-neutral { color: #8C8C8C; }
         
         .dday-counter {
             text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
+            background: transparent;
+            color: var(--ink);
+            border-radius: 0;
             padding: 20px;
             margin: 20px 0;
         }
@@ -1034,7 +1046,7 @@
             font-size: 3em;
             font-weight: bold;
             margin: 10px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: none;
         }
         
         .dday-text {
@@ -1044,7 +1056,7 @@
         
         .badge-container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* ⭐ 무조건 2열로 고정 ⭐ */
+    grid-template-columns: repeat(2, 1fr);  /* 무조건 2열로 고정 */
     gap: 8px;
     margin: 15px 0;
 }
@@ -1054,50 +1066,50 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 10px 12px;  /* ⭐ 8px → 10px ⭐ */
-    border-radius: 20px;
-    font-size: 0.8em;  /* ⭐ 0.85em → 0.8em (조금 작게) ⭐ */
+    padding: 10px 12px;  /* 8px → 10px */
+    border-radius: 0;
+    font-size: 0.8em;  /* 0.85em → 0.8em (조금 작게) */
     font-weight: bold;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: none;
     text-align: center;
-    min-height: 44px;  /* ⭐ 40px → 44px ⭐ */
+    min-height: 44px;  /* 40px → 44px */
     color: white;
-    word-wrap: break-word;  /* ⭐ word-break 대신 사용 ⭐ */
+    word-wrap: break-word;  /* word-break 대신 사용 */
     white-space: normal;
-    line-height: 1.4;  /* ⭐ 1.3 → 1.4 ⭐ */
-    overflow: visible;  /* ⭐ 추가 ⭐ */
+    line-height: 1.4;  /* 1.3 → 1.4 */
+    overflow: visible;  /* 추가 */
 }
         
       /* 뱃지 타입별 색상 */
-.achievement-badge.grade { background: linear-gradient(45deg, #ffd700, #ff8c00); }
-.achievement-badge.score { background: linear-gradient(45deg, #667eea, #764ba2); }
-.achievement-badge.trend { background: linear-gradient(45deg, #ff6b6b, #feca57); }
-.achievement-badge.improvement { background: linear-gradient(45deg, #10b981, #059669); }
-.achievement-badge.attendance { background: linear-gradient(45deg, #8b5cf6, #7c3aed); }
-.achievement-badge.special { background: linear-gradient(45deg, #f59e0b, #d97706); }
-.achievement-badge.stability { background: linear-gradient(45deg, #06b6d4, #0891b2); }
-.achievement-badge.rank { background: linear-gradient(45deg, #ef4444, #dc2626); }
-.achievement-badge.recovery { background: linear-gradient(45deg, #84cc16, #65a30d); }
-.achievement-badge.start { background: linear-gradient(45deg, #ec4899, #db2777); }
-.achievement-badge.milestone { background: linear-gradient(45deg, #f97316, #ea580c); }
+.achievement-badge.grade { background: transparent; }
+.achievement-badge.score { background: transparent; }
+.achievement-badge.trend { background: transparent; }
+.achievement-badge.improvement { background: transparent; }
+.achievement-badge.attendance { background: transparent; }
+.achievement-badge.special { background: transparent; }
+.achievement-badge.stability { background: transparent; }
+.achievement-badge.rank { background: transparent; }
+.achievement-badge.recovery { background: transparent; }
+.achievement-badge.start { background: transparent; }
+.achievement-badge.milestone { background: transparent; }
 
-/* ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐ */
-.achievement-badge.subject-master { background: linear-gradient(45deg, #9b59b6, #8e44ad); }
-.achievement-badge.single-jump { background: linear-gradient(45deg, #16a085, #2ecc71); }
-.achievement-badge.total-growth { background: linear-gradient(45deg, #27ae60, #2ecc71); }
-/* ⭐⭐⭐ 여기까지 추가 ⭐⭐⭐ */
+/* 여기부터 추가 */
+.achievement-badge.subject-master { background: transparent; }
+.achievement-badge.single-jump { background: transparent; }
+.achievement-badge.total-growth { background: transparent; }
+/* 여기까지 추가 */
         
         .badge-new {
             animation: pulse-badge 2s infinite;
         }
 
-/* 🆕 고급 학습 계획서 스타일 */
+/* 고급 학습 계획서 스타일 */
 .plan-target-setting {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 25px;
     margin-bottom: 20px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: none;
 }
 
 .target-input-grid {
@@ -1109,7 +1121,7 @@
 
 .target-input-item {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 15px;
 }
 
@@ -1126,33 +1138,33 @@
     width: 100%;
     padding: 10px;
     border: none;
-    border-radius: 6px;
+    border-radius: 0;
     background: rgba(255, 255, 255, 0.9);
     font-size: 0.95em;
 }
 
 .generate-plan-btn {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
+    background: transparent;
+    color: var(--ink);
     border: none;
     padding: 15px 35px;
-    border-radius: 30px;
+    border-radius: 0;
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    box-shadow: none;
 }
 
 .generate-plan-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transform: none;
+    box-shadow: none;
 }
 
 /* 고급 계획서 결과 스타일 */
 .advanced-study-plan {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
+    border-radius: 0;
     padding: 30px;
     margin-top: 25px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -1173,7 +1185,7 @@
 
 .student-info-banner {
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
+    border-radius: 0;
     padding: 15px;
     margin: 15px 0;
 }
@@ -1187,17 +1199,17 @@
 
 .status-card {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 20px;
-    border-left: 4px solid;
+    border-left: 3px solid;
 }
 
 .current-status-card {
-    border-left-color: #dc3545;
+    border-left-color: #D4271C;
 }
 
 .target-status-card {
-    border-left-color: #28a745;
+    border-left-color: #141414;
 }
 
 .status-card h4 {
@@ -1217,7 +1229,7 @@
 .metric-item {
     text-align: center;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 12px 8px;
 }
 
@@ -1235,7 +1247,7 @@
 
 .improvement-analysis {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 25px;
     margin-bottom: 25px;
 }
@@ -1276,22 +1288,22 @@
             
 .weak-subject-card {
     background: rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
+    border-radius: 0;
     padding: 20px;
     margin-bottom: 15px;
-    border-left: 4px solid;
+    border-left: 3px solid;
 }
 
 .weak-subject-card.priority-high {
-    border-left-color: rgba(220, 53, 69, 0.8);
+    border-left-color: #D4271C;
 }
 
 .weak-subject-card.priority-medium {
-    border-left-color: rgba(255, 193, 7, 0.8);
+    border-left-color: #141414;
 }
 
 .weak-subject-card.priority-low {
-    border-left-color: rgba(23, 162, 184, 0.8);
+    border-left-color: #141414;
 }
 
 .subject-header {
@@ -1309,22 +1321,22 @@
 
 .priority-badge {
     padding: 6px 12px;
-    border-radius: 15px;
+    border-radius: 0;
     font-size: 0.8em;
     font-weight: bold;
     color: white;
 }
 
 .priority-high { 
-    background: rgba(220, 53, 69, 0.8);
+    background: #D4271C;
     color: white; 
 }
 .priority-medium { 
-    background: rgba(255, 193, 7, 0.9);
-    color: #333; 
+    background: #141414;
+    color: #141414; 
 }
 .priority-low { 
-    background: rgba(23, 162, 184, 0.8);
+    background: #141414;
     color: white; 
 }
 
@@ -1337,7 +1349,7 @@
 
 .detail-metric {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
+    border-radius: 0;
     padding: 10px;
     text-align: center;
 }
@@ -1356,7 +1368,7 @@
 
 .study-materials {
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 15px;
     margin-top: 15px;
 }
@@ -1372,26 +1384,26 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: transparent;
+    color: var(--ink);
     text-decoration: none;
     padding: 8px 15px;
-    border-radius: 20px;
+    border-radius: 0;
     font-size: 0.9em;
     font-weight: 600;
     transition: all 0.3s ease;
 }
 
 .material-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    transform: none;
+    box-shadow: none;
     text-decoration: none;
     color: white;
 }
 
 .weekly-schedule-advanced {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 25px;
     margin-bottom: 25px;
 }
@@ -1405,7 +1417,7 @@
 
 .schedule-day {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    border-radius: 0;
     padding: 15px 10px;
     text-align: center;
     min-height: 120px;
@@ -1421,7 +1433,7 @@
 
 .study-session {
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
+    border-radius: 0;
     padding: 8px;
     margin-bottom: 6px;
     font-size: 0.8em;
@@ -1438,19 +1450,19 @@
 }
 
 .motivation-banner {
-    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-    color: #333;
-    border-radius: 12px;
+    background: transparent;
+    color: #141414;
+    border-radius: 0;
     padding: 25px;
     text-align: center;
     margin-bottom: 25px;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: none;
 }
 
 .motivation-banner h4 {
     font-size: 1.4em;
     margin-bottom: 15px;
-    color: #333;
+    color: #141414;
 }
 
 .motivation-text {
@@ -1469,7 +1481,7 @@
 .action-button {
     padding: 12px 25px;
     border: none;
-    border-radius: 25px;
+    border-radius: 0;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1481,23 +1493,23 @@
 }
 
 .pdf-download-btn {
-    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-    color: white;
+    background: transparent;
+    color: var(--ink);
 }
 
 .pdf-download-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+    transform: none;
+    box-shadow: none;
 }
 
 .edit-plan-btn {
-    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-    color: white;
+    background: transparent;
+    color: var(--ink);
 }
 
 .edit-plan-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+    transform: none;
+    box-shadow: none;
 }
         
         @keyframes pulse-badge {
@@ -1509,13 +1521,13 @@
             text-align: center;
             margin: 15px 0;
             padding: 10px;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 8px;
-            color: #667eea;
+            background: transparent;
+            border-radius: 0;
+            color: #141414;
             font-weight: bold;
         }
 
-/* 🆕 학습 계획서 모바일 최적화 추가 */
+/* 학습 계획서 모바일 최적화 추가 */
 @media (max-width: 768px) {
     .target-input-grid {
         grid-template-columns: 1fr !important;
@@ -1608,7 +1620,7 @@
         
 .improvement-analysis {
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 25px;
     margin-bottom: 25px;
 }
@@ -1650,27 +1662,20 @@
     margin: 20px 0;
 }
 
-        아! 찾으셨네요! 바로 그 위치입니다.
-
-.chart-container { 와 .progress-ring { 사이에 코멘트 CSS를 추가하시면 됩니다.
-
-정확한 위치:
-
-css
 .chart-container {
     position: relative;
     height: 300px;
     margin: 20px 0;
 }
 
-/* ⭐⭐⭐ 여기부터 코멘트 CSS 추가 ⭐⭐⭐ */
+/* 여기부터 코멘트 CSS 추가 */
 /* 선생님 코멘트 스타일 */
 .teacher-comment-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
+    background: transparent;
+    border-radius: 0;
     padding: 25px;
     margin: 25px 0;
-    color: white;
+    color: var(--ink);
 }
 
 .teacher-comment-section h3 {
@@ -1683,7 +1688,7 @@ css
 
 .comment-display {
     background: rgba(255, 255, 255, 0.15);
-    border-radius: 10px;
+    border-radius: 0;
     padding: 15px;
     margin: 10px 0;
     line-height: 1.6;
@@ -1698,12 +1703,12 @@ css
     min-height: 300px;
     padding: 15px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+    border-radius: 0;
     font-size: 1em;
     font-family: inherit;
     resize: vertical;
     background: rgba(255, 255, 255, 0.95);
-    color: #333;
+    color: #141414;
     display: block;
 }
 
@@ -1716,7 +1721,7 @@ css
 .comment-btn {
     padding: 12px 24px;
     border: none;
-    border-radius: 25px;
+    border-radius: 0;
     font-size: 1em;
     font-weight: bold;
     cursor: pointer;
@@ -1724,13 +1729,13 @@ css
 }
 
 .comment-btn-save {
-    background: #10b981;
+    background: #141414;
     color: white;
 }
 
 .comment-btn-save:hover {
-    background: #059669;
-    transform: translateY(-2px);
+    background: #141414;
+    transform: none;
 }
 
 .comment-btn-edit {
@@ -1744,19 +1749,19 @@ css
 }
 
 .comment-btn-cancel {
-    background: #ef4444;
+    background: #D4271C;
     color: white;
 }
 
 .comment-btn-cancel:hover {
-    background: #dc2626;
+    background: #D4271C;
 }
 
 .comment-empty {
     opacity: 0.7;
     font-style: italic;
 }
-/* ⭐⭐⭐ 여기까지 추가 ⭐⭐⭐ */
+/* 여기까지 추가 */
 
         
         .progress-ring {
@@ -1777,43 +1782,43 @@ css
             position: absolute;
             font-size: 1.2em;
             font-weight: bold;
-            color: #333;
+            color: #141414;
         }
         
         /* 그랜드 마스터 애니메이션 */
         @keyframes grand-master-glow {
             0% { 
-                box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+                box-shadow: none;
                 transform: scale(1);
             }
             100% { 
-                box-shadow: 0 12px 35px rgba(255, 215, 0, 0.6);
+                box-shadow: none;
                 transform: scale(1.02);
             }
         }
         
         /* 그랜드 마스터 전용 스타일 */
         .grand-master-message {
-            background: linear-gradient(135deg, #ffd700, #ff8c00);
-            color: white;
-            border-radius: 15px;
+            background: transparent;
+            color: var(--ink);
+            border-radius: 0;
             padding: 20px;
             margin: 15px 0;
             text-align: center;
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            box-shadow: none;
             animation: grand-master-glow 2s infinite alternate;
         }
 
-        /* 🚀 여기부터 새로운 CSS 추가! */
+        /* 여기부터 새로운 CSS 추가! */
 /* 새로운 뱃지 스타일 */
 .achievement-badge.single-jump { 
-    background: linear-gradient(45deg, #16a085, #2ecc71); 
+    background: transparent; 
 }
 .achievement-badge.total-growth { 
-    background: linear-gradient(45deg, #27ae60, #2ecc71); 
+    background: transparent; 
 }
 .achievement-badge.subject-master { 
-    background: linear-gradient(45deg, #9b59b6, #8e44ad); 
+    background: transparent; 
 }
 
 /* 뱃지 설명 툴팁 스타일 */
@@ -1822,23 +1827,23 @@ css
     background: rgba(0, 0, 0, 0.95);
     color: white;
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: 0;
     font-size: 0.85em;
     max-width: 250px;
-    z-index: 999999;  /* ⭐ 99999 → 999999 ⭐ */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 999999;  /* 99999 → 999999 */
+    box-shadow: none;
     pointer-events: none;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.3s ease;
     line-height: 1.4;
-    display: block !important;  /* ⭐ 추가 ⭐ */
+    display: block !important;  /* 추가 */
 }
 
 .badge-tooltip.visible {
-    opacity: 1 !important;  /* ⭐ !important 추가 ⭐ */
-    transform: translateY(0) !important;  /* ⭐ !important 추가 ⭐ */
-    display: block !important;  /* ⭐ 추가 ⭐ */
+    opacity: 1 !important;  /* !important 추가 */
+    transform: translateY(0) !important;  /* !important 추가 */
+    display: block !important;  /* 추가 */
 }
 
 .badge-tooltip.visible {
@@ -1852,7 +1857,7 @@ css
     top: -6px;
     left: 50%;
     transform: translateX(-50%);
-    border-left: 6px solid transparent;
+    border-left: 3px solid transparent;
     border-right: 6px solid transparent;
     border-bottom: 6px solid rgba(0, 0, 0, 0.9);
 }
@@ -1864,7 +1869,7 @@ css
 }
 
 .achievement-badge:hover {
-    transform: scale(1.05);
+    transform: none;
     z-index: 10;
 }
 
@@ -1918,26 +1923,26 @@ css
     justify-content: center;
 }
 .subject-graph-overlay.active {
-    display: block !important;  /* ⭐ 여기도 !important 추가 ⭐ */
+    display: block !important;  /* 여기도 !important 추가 */
 }
 
 .subject-graph-popup {
     position: relative;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    border-radius: 24px;
+    background: transparent;
+    border-radius: 0;
     padding: 35px;
     max-width: 500px;
     width: 85%;
     max-height: 80vh;
-    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.25);
+    box-shadow: none;
     animation: popIn 0.3s ease;
     z-index: 100000;
-    border: 2px solid rgba(102, 126, 234, 0.1);
+    border: 2px solid transparent;
     margin: auto;
 }
 
 .subject-graph-popup h3 {
-    color: #667eea;
+    color: #141414;
     margin-bottom: 25px;
     font-size: 1.4em;
     display: flex;
@@ -1947,32 +1952,32 @@ css
     text-align: center;
     justify-content: center;
     padding-bottom: 15px;
-    border-bottom: 2px solid rgba(102, 126, 234, 0.1);
+    border-bottom: 2px solid transparent;
 }
 
 .subject-graph-close {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white;
+    background: transparent;
+    color: var(--ink);
     border: none;
     padding: 12px 28px;
-    border-radius: 25px;
+    border-radius: 0;
     cursor: pointer;
     font-size: 1em;
     font-weight: 600;
     margin-top: 20px;
     transition: all 0.3s;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: none;
     width: 100%;
 }
 
 .subject-graph-close:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    transform: none;
+    box-shadow: none;
 }
 
 .subject-graph-close:hover {
-    background: #dc2626;
-    transform: translateY(-2px);
+    background: #D4271C;
+    transform: none;
 }
 
 .subject-graph-canvas {
@@ -1980,9 +1985,9 @@ css
     height: 320px;
     margin: 20px 0;
     background: white;
-    border-radius: 12px;
+    border-radius: 0;
     padding: 15px;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+    box-shadow: none;
 }
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -2018,43 +2023,240 @@ css
     }
 }
                                      
+    
+/* ================================================================
+   새 디자인 (잡지형 · 큰 호수 번호) — 색·글꼴은 맨 위 :root 변수만 고치면 됨
+   ================================================================ */
+html, body { background: var(--paper) !important; }
+body { font-family: var(--font) !important; color: var(--ink); word-break: keep-all; line-height: 1.6; padding: 0 !important; }
+h1, h2, h3, h4, h5 { word-break: keep-all; color: var(--ink); }
+:focus-visible { outline: 2px solid var(--red) !important; outline-offset: 2px; }
+a { color: var(--ink); }
+.container { max-width: 1080px !important; margin: 0 auto !important; padding: 32px 40px 80px !important; background: var(--paper) !important; border: 0 !important; }
+
+/* 머리 */
+.masthead { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; border-bottom: 1px solid var(--ink); padding-bottom: 10px; }
+.masthead .who { font-weight: 700; }
+.masthead .meta { color: var(--gray); font-size: 13px; }
+.header { text-align: left !important; margin: 36px 0 0 !important; padding: 0 !important; background: none !important; color: var(--ink) !important; }
+.header .kicker { font-size: 12px; font-weight: 800; letter-spacing: .14em; color: var(--red); }
+.header h1 { font-size: 56px !important; font-weight: 800 !important; letter-spacing: -2px; line-height: 1.15; margin: 6px 0 0 !important; color: var(--ink) !important; }
+.header p { display: none; }
+
+/* 탭 */
+.tab-container { display: flex; gap: 28px; border-bottom: 1px solid var(--ink) !important; margin: 28px 0 0 !important; background: none !important; padding: 0 !important; }
+.tab { font-family: inherit !important; font-size: 15px !important; font-weight: 700 !important; background: none !important; border: 0 !important; border-bottom: 3px solid transparent !important; padding: 10px 0 !important; margin: 0 0 -1px !important; color: var(--gray) !important; cursor: pointer; flex: none !important; }
+.tab.active { color: var(--ink) !important; border-bottom-color: var(--red) !important; }
+.tab:hover { color: var(--ink) !important; }
+
+/* 공통: 상자·카드 → 선과 여백 */
+.dashboard-card, .analysis-card, .status-card, .grade-card, .weak-subject-card, .current-status-card, .target-status-card,
+.instructions, .no-data, .no-results, .data-summary, .setup-section, .admin-check, .upload-area, .summary-item,
+.student-info, .teacher-comment-section, .ai-analysis, .advanced-study-plan, .grade-strategy, .target-analysis,
+.improvement-analysis, .total-strategy, .recommendation-item, .subject-strategy-item, .schedule-day, .study-session,
+.motivation-banner, .grade-summary, .grade-summary-item, .metric-item, .stat-item, .recent-test-item, .plan-target-setting,
+.target-input-item, .subject-detail, .grade-item, .status-dashboard, .study-materials, .grand-master-message {
+  background: transparent !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; color: var(--ink) !important;
+}
+.dashboard-card, .ai-analysis, .teacher-comment-section, .data-summary, .setup-section, .admin-check, .upload-area {
+  border-top: 3px solid var(--ink) !important; padding: 14px 0 10px !important; margin: 48px 0 0 !important;
+}
+.ai-analysis::before, .ai-analysis::after { display: none !important; }
+.ai-analysis *, .advanced-study-plan *, .grand-master-message * { color: inherit; }
+.ai-analysis h3, .dashboard-card h3, .teacher-comment-section h3, .data-summary h3, .setup-section h3, .admin-check h3,
+.upload-area h3, .instructions h3 { font-size: 22px !important; font-weight: 800 !important; letter-spacing: -.5px; color: var(--ink) !important; margin: 0 0 12px !important; }
+.analysis-card, .grade-card, .weak-subject-card, .current-status-card, .target-status-card, .subject-strategy-item,
+.recommendation-item, .recent-test-item, .schedule-day { border-top: 1px solid var(--ink) !important; padding: 12px 0 !important; }
+.ai-icon { display: none !important; }
+.ai-analysis-header { margin-bottom: 8px !important; }
+.ai-analysis-header p { color: var(--gray) !important; }
+.dashboard-grid, .analysis-grid { gap: 0 40px !important; }
+.dashboard-grid .dashboard-card { margin-top: 32px !important; }
+
+/* 숫자: 크고 가늘게 / 라벨: 작고 굵게 */
+.stat-value, .metric-value, .summary-value, .grade-summary-value, .detail-value, .dday-number, .recent-test-score, .grade-value, .total-points {
+  font-weight: var(--thin) !important; color: var(--ink) !important; -webkit-text-fill-color: currentColor !important; background: none !important;
+}
+.stat-label, .metric-label, .summary-label, .grade-summary-label, .detail-label, .grade-label { font-size: 12px !important; font-weight: 800 !important; color: var(--gray) !important; }
+.stat-item { border-bottom: 1px solid var(--line) !important; padding: 8px 0 !important; }
+.stat-positive, .trend-up { color: var(--red) !important; }
+.stat-negative, .trend-down, .stat-neutral, .trend-stable { color: var(--ink) !important; }
+.summary-value { font-size: 40px !important; line-height: 1.1; }
+
+/* D-day */
+.dday-counter { text-align: left !important; padding: 14px 0 0 !important; margin: 40px 0 0 !important; border-top: 3px solid var(--ink) !important; color: var(--ink) !important; animation: none !important; }
+.dday-text { font-size: 12px !important; font-weight: 800 !important; letter-spacing: .1em; color: var(--red) !important; }
+.dday-number { font-size: 120px !important; letter-spacing: -6px; line-height: 1 !important; margin: 4px 0 !important; }
+.dday-counter div { color: var(--gray); }
+
+/* 첫 화면 */
+.hero { display: grid; grid-template-columns: 1fr 340px; gap: 48px; margin-top: 40px; }
+.hero .lab, .label { font-size: 12px; font-weight: 800; letter-spacing: .1em; color: var(--red); }
+.hero .num { font-size: 200px; font-weight: var(--thin); letter-spacing: -10px; line-height: .95; margin-top: 8px; }
+.hero .sub { font-size: 14px; color: var(--gray); margin-top: 8px; }
+.steps .step { border-top: 1px solid var(--ink); padding: 14px 0 18px; display: flex; gap: 14px; }
+.steps .n { font-size: 13px; font-weight: 800; color: var(--red); width: 26px; padding-top: 2px; flex: none; }
+.steps .t { font-size: 17px; font-weight: 700; }
+.steps .d { font-size: 13px; color: var(--gray); margin-top: 2px; }
+.instructions { margin: 0 !important; padding: 0 !important; }
+.instructions p { color: var(--gray) !important; }
+#urlInfo { background: none !important; border: 0 !important; border-left: 3px solid var(--red) !important; padding: 4px 0 4px 14px !important; }
+#urlInfo code { background: none !important; padding: 0 !important; }
+
+/* 검색 */
+.search-section { margin: 40px 0 0 !important; border-top: 3px solid var(--ink); padding-top: 18px !important; background: none !important; }
+.search-section::before { content: '출결번호'; display: block; font-size: 12px; font-weight: 800; letter-spacing: .1em; color: var(--red); margin-bottom: 10px; }
+.search-box { display: flex !important; gap: 12px !important; background: none !important; border: 0 !important; padding: 0 !important; }
+.search-input { flex: 1; font-family: inherit !important; font-size: 28px !important; border: 0 !important; border-bottom: 1px solid var(--ink) !important; border-radius: 0 !important; padding: 6px 0 !important; letter-spacing: .1em; background: transparent !important; box-shadow: none !important; color: var(--ink) !important; }
+.search-input::placeholder { color: #BDBDBD; letter-spacing: 0; font-size: 18px; }
+.search-input:focus { border-bottom: 3px solid var(--red) !important; outline: none !important; }
+
+/* 버튼: 먹색 바탕 흰 글자 / 주요 버튼만 빨강 */
+.search-btn, .upload-btn, .admin-btn, .setup-btn, .comment-btn, .generate-plan-btn, .pdf-download-btn, .edit-plan-btn, .action-button, button.btn {
+  font-family: inherit !important; font-weight: 700 !important; font-size: 15px !important; padding: 12px 24px !important;
+  background: var(--ink) !important; color: #fff !important; border: 1px solid var(--ink) !important; border-radius: 0 !important;
+  box-shadow: none !important; transform: none !important; cursor: pointer; white-space: nowrap;
+}
+.search-btn { background: var(--red) !important; border-color: var(--red) !important; }
+.search-btn:disabled, .upload-btn:disabled { background: #fff !important; color: var(--gray) !important; border-color: var(--line) !important; cursor: not-allowed; }
+.comment-btn-cancel, .edit-plan-btn { background: #fff !important; color: var(--ink) !important; }
+.search-btn:hover, .upload-btn:hover, .admin-btn:hover, .setup-btn:hover, .comment-btn:hover, .generate-plan-btn:hover, .pdf-download-btn:hover { opacity: .85; transform: none !important; }
+.material-link { background: transparent !important; color: var(--ink) !important; border: 0 !important; border-bottom: 1px solid var(--ink) !important; border-radius: 0 !important; padding: 4px 0 !important; transform: none !important; }
+
+/* 입력칸 */
+.setup-input, .admin-password, .comment-edit-area, select, input[type="text"], input[type="password"], input[type="number"], textarea {
+  font-family: inherit; border: 0 !important; border-bottom: 1px solid var(--ink) !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; color: var(--ink);
+}
+.comment-edit-area, textarea { border: 1px solid var(--ink) !important; }
+
+/* 표: 가로선만 */
+table { border-collapse: collapse !important; }
+th { background: transparent !important; color: var(--gray) !important; font-size: 12px !important; font-weight: 700 !important; border: 0 !important; border-bottom: 1px solid var(--ink) !important; }
+td { border: 0 !important; border-bottom: 1px solid var(--line) !important; background: transparent !important; color: var(--ink); font-variant-numeric: tabular-nums; }
+.score-cell, .grade-cell { text-align: right !important; }
+tr:hover td { background: transparent !important; }
+
+/* 등급 색 칸 → 먹색 글자, 1·2등급만 빨강 */
+.grade-1, .grade-2 { color: var(--red) !important; background: none !important; }
+.grade-3, .grade-4, .grade-5, .grade-6, .grade-excellent, .grade-good, .grade-average, .grade-poor, .grade-needs-improvement { color: var(--ink) !important; background: none !important; }
+
+/* 뱃지: 이모지 대신 작은 네모 */
+.badge-container { display: flex !important; flex-wrap: wrap; gap: 0 28px !important; }
+.achievement-badge { background: transparent !important; color: var(--ink) !important; border: 0 !important; border-bottom: 1px solid var(--line) !important; border-radius: 0 !important; padding: 8px 0 !important; box-shadow: none !important; animation: none !important; font-size: 14px !important; font-weight: 400 !important; transform: none !important; }
+.achievement-badge::before { content: ''; display: inline-block; width: 7px; height: 7px; background: var(--ink); margin-right: 8px; vertical-align: 2px; }
+.achievement-badge.badge-new::before { background: var(--red); }
+.achievement-badge.badge-new span:last-child { color: var(--red); font-size: 11px !important; font-weight: 800; }
+.badge-summary { background: none !important; color: var(--gray) !important; border: 0 !important; padding: 0 !important; font-size: 13px; }
+.badge-tooltip { background: var(--ink) !important; color: #fff !important; border-radius: 0 !important; }
+.grand-master-message { border-left: 3px solid var(--red) !important; padding: 8px 0 8px 16px !important; text-align: left !important; }
+
+/* 선생님 코멘트 */
+.comment-display { border-left: 3px solid var(--red) !important; padding: 4px 0 4px 16px !important; background: none !important; font-size: 15px; line-height: 1.8; }
+.comment-empty { color: var(--gray) !important; }
+
+/* 진행 막대·우선순위 표시 */
+.progress-bar, .progress-bar-fill { background: var(--ink) !important; color: #fff !important; border-radius: 0 !important; }
+.progress, .progress-bar-container { background: var(--track) !important; border-radius: 0 !important; }
+.priority-badge, .priority-high, .priority-medium, .priority-low, .possibility-high, .possibility-medium, .possibility-low, .recommendation-priority {
+  background: none !important; color: var(--ink) !important; border: 1px solid var(--ink) !important; border-radius: 0 !important; }
+.priority-high, .possibility-low { color: var(--red) !important; border-color: var(--red) !important; }
+
+/* 상태 알림 */
+.status { border-radius: 0 !important; border: 0 !important; border-left: 3px solid var(--ink) !important; background: none !important; color: var(--ink) !important; }
+.status.error { border-left-color: var(--red) !important; color: var(--red) !important; }
+
+/* 그래프 팝업 */
+.subject-graph-popup { background: #fff !important; border: 1px solid var(--ink) !important; border-radius: 0 !important; }
+.subject-graph-close { background: var(--ink) !important; color: #fff !important; border-radius: 0 !important; }
+.subject-graph-overlay { background: rgba(20,20,20,.5) !important; backdrop-filter: none !important; }
+
+/* 결과 첫머리: 큰 등급 + 회차 목록 */
+.student-line { display: flex; justify-content: space-between; align-items: baseline; margin-top: 40px; border-bottom: 1px solid var(--ink); padding-bottom: 10px; gap: 12px; }
+.student-line h2 { font-size: 30px; font-weight: 800; letter-spacing: -1px; }
+.student-line h2 small { font-size: 14px; font-weight: 400; color: var(--gray); margin-left: 12px; letter-spacing: 0; }
+.spread { display: grid; grid-template-columns: 1fr 360px; gap: 48px; margin-top: 28px; }
+.spread .big .num { font-size: 260px; font-weight: var(--thin); line-height: .9; letter-spacing: -12px; margin-top: 6px; }
+.spread .big .num span { font-size: 48px; letter-spacing: 0; margin-left: 10px; }
+.spread .line2 { display: flex; flex-wrap: wrap; gap: 36px; margin-top: 18px; border-top: 3px solid var(--ink); padding-top: 14px; }
+.spread .stat .k { font-size: 12px; font-weight: 800; color: var(--gray); }
+.spread .stat .v { font-size: 40px; font-weight: var(--thin); line-height: 1.1; }
+.spread .stat .v.up { color: var(--red); }
+.spread .tests { max-height: 420px; overflow-y: auto; }
+.spread .tests .row { border-top: 1px solid var(--ink); padding: 12px 0 14px; display: flex; gap: 14px; }
+.spread .tests .n { font-size: 13px; font-weight: 800; color: var(--red); width: 26px; padding-top: 3px; flex: none; }
+.spread .tests .t { font-size: 17px; font-weight: 700; display: flex; justify-content: space-between; gap: 8px; }
+.spread .tests .t em { font-style: normal; font-weight: var(--thin); font-size: 26px; }
+.spread .tests .d { font-size: 13px; color: var(--gray); }
+.spread .tests .row.now .t em { color: var(--red); }
+
+@media (max-width: 768px) {
+  .container { padding: 20px 18px 60px !important; }
+  .header h1 { font-size: 38px !important; }
+  .masthead .meta { display: none; }
+  .hero, .spread { grid-template-columns: 1fr; gap: 28px; }
+  .hero .num { font-size: 110px; letter-spacing: -5px; }
+  .spread .big .num { font-size: 150px; letter-spacing: -6px; }
+  .spread .line2 { gap: 20px; }
+  .spread .stat .v { font-size: 30px; }
+  .dday-number { font-size: 80px !important; letter-spacing: -3px; }
+  .student-line h2 small { display: block; margin: 4px 0 0; }
+  .search-input { font-size: 22px !important; }
+  .tab-container { flex-direction: row !important; }
+  .tab { width: auto !important; }
+}
+
+.student-info { padding: 0 !important; margin: 0 !important; }
+.no-data { text-align: left !important; border-top: 1px solid var(--ink) !important; padding: 12px 0 !important; margin-top: 48px !important; font-size: 13px; color: var(--gray) !important; }
+.no-data h3 { display: inline; font-size: 13px !important; font-weight: 800; color: var(--ink) !important; margin-right: 10px; }
+.no-data p { display: inline; color: var(--gray) !important; font-size: 13px !important; }
+
     </style>
 </head>
 <body>
     <div class="container">
+        <header class="masthead"><span class="who">정동민국어논술학원 · 2029 고1 국어</span><span class="meta" id="mastMeta">모의고사 성적 조회</span></header>
         <div class="header">
-            <h1>📊 모클 성적 조회 시스템</h1>
+            <div class="kicker">SCORE REPORT</div>
+            <h1>모클 성적 조회</h1>
             <p>정동민국어논술학원 • 고1 모의고사 성적 조회 • AI 분석 포함</p>
         </div>
         
        <div class="tab-container">
-    <button class="tab active" onclick="switchTab('student')">🔍 성적 조회</button>
-    <button class="tab" onclick="switchTab('admin')">⚙️ 관리자</button>
+    <button class="tab active" onclick="switchTab('student')">성적 조회</button>
+    <button class="tab" onclick="switchTab('admin')">관리자</button>
 </div>
         
         <!-- 학생 조회 탭 -->
         <div id="studentTab" class="tab-content active">
-            <div class="instructions">
-                <h3>📋 성적 조회 방법 (고1)</h3>
-                <p>• <strong>출결번호로 검색:</strong> 본인의 4자리 출결번호를 입력하세요</p>
-                <p>• 예시: 2274, 1234, 0338 등</p>
-                <p>• <strong>🧠 분석:</strong> 성적 조회 시 자동으로 개인별 맞춤 분석을 제공합니다</p>
-                <div id="urlInfo" style="margin-top: 15px; padding: 10px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #4caf50; display: none;">
-                    <strong>💡 더 쉬운 접속 방법:</strong><br>
+            <div class="hero" id="heroArea">
+              <div>
+                <div class="lab">D-DAY · 2029 수능까지</div>
+                <div class="num" id="heroDday">-</div>
+                <div class="sub" id="heroDdaySub"></div>
+              </div>
+              <div class="instructions steps">
+                <h3 class="sr-only" style="position:absolute;left:-9999px">성적 조회 방법 (고1)</h3>
+                <div class="step"><span class="n">01</span><div><div class="t">출결번호로 조회</div><div class="d">본인의 4자리 출결번호를 입력하세요 (예: 2274, 0338)</div></div></div>
+                <div class="step"><span class="n">02</span><div><div class="t">회차별 성적과 등급</div><div class="d">모클·모의고사 전체 기록을 한눈에</div></div></div>
+                <div class="step"><span class="n">03</span><div><div class="t">문제 유형별 분석</div><div class="d">자주 틀리는 유형과 놓친 문제</div></div></div>
+                <div class="step"><span class="n">04</span><div><div class="t">학습 보고서 · 계획서</div><div class="d">성적에 맞춘 분석과 주간 계획</div></div></div>
+                <div id="urlInfo" style="margin-top: 15px; padding: 10px; background: #FFFFFF; border-radius: 0; border-left: 3px solid #141414; display: none;">
+                    <strong>더 쉬운 접속 방법:</strong><br>
                     다음 URL을 북마크하면 어떤 기기에서든 바로 사용할 수 있습니다:<br>
-                    <code id="shareableUrl" style="background: white; padding: 5px; border-radius: 4px; font-size: 0.9em;"></code>
+                    <code id="shareableUrl" style="background: white; padding: 5px; border-radius: 0; font-size: 0.9em;"></code>
                 </div>
+              </div>
             </div>
             
             <div class="search-section">
                 <div class="search-box">
                     <input type="text" id="searchInput" class="search-input" placeholder="출결번호를 입력하세요 (예: 2274)" maxlength="4">
-                    <button onclick="searchStudent()" class="search-btn" id="searchBtn">🔍 조회</button>
+                    <button onclick="searchStudent()" class="search-btn" id="searchBtn">조회</button>
                 </div>
             </div>
             
             <div id="noData" class="no-data">
-                <h3>📋 데이터 상태</h3>
+                <h3>데이터 상태</h3>
                 <p id="dataStatusMessage">온라인 데이터를 불러오는 중...</p>
             </div>
             
@@ -2067,7 +2269,7 @@ css
                 <!-- 분석 섹션 -->
                 <div id="aiAnalysis" class="ai-analysis" style="display: none;">
                     <div class="ai-analysis-header">
-                        <div class="ai-icon">🧠</div>
+                        <div class="ai-icon"></div>
                         <div>
                             <h3>학습 분석 보고서 (고1)</h3>
                             <p style="opacity: 0.9; margin: 0;">개인별 맞춤 성적 분석 및 학습 전략 제안</p>
@@ -2076,7 +2278,7 @@ css
                     
                     <div id="aiContent" class="ai-content">
                         <div class="ai-loading">
-                            <span>🧠 고1 성적을 분석하고 있습니다</span>
+                            <span>고1 성적을 분석하고 있습니다</span>
                             <div class="loading-dots">
                                 <div class="loading-dot"></div>
                                 <div class="loading-dot"></div>
@@ -2086,10 +2288,10 @@ css
                     </div>
                 </div>
 
-                <!-- 🆕 새로운 간소화된 학습 계획서 섹션 -->
+                <!-- 새로운 간소화된 학습 계획서 섹션 -->
 <div id="studyPlanSection" class="ai-analysis" style="display: none; margin-top: 20px;">
     <div class="ai-analysis-header">
-        <div class="ai-icon">📋</div>
+        <div class="ai-icon"></div>
         <div>
             <h3>맞춤형 학습 계획서</h3>
             <p style="opacity: 0.9; margin: 0;">AI 분석 기반 개인별 최적화 학습 전략</p>
@@ -2107,7 +2309,7 @@ css
             </div>
             
             <div id="noResults" class="no-results" style="display: none;">
-                <h3>🔍 검색 결과가 없습니다</h3>
+                <h3>검색 결과가 없습니다</h3>
                 <p>입력하신 출결번호를 다시 확인해주세요.</p>
             </div>
         </div>
@@ -2116,19 +2318,19 @@ css
         <div id="adminTab" class="tab-content">
             <!-- 관리자 인증 섹션 -->
             <div id="adminAuthSection" class="admin-check">
-                <h3>🔐 관리자 인증</h3>
+                <h3>관리자 인증</h3>
                 <p>관리자 기능을 사용하려면 비밀번호를 입력해주세요.</p>
                 <input type="password" id="adminPassword" class="admin-password" placeholder="관리자 비밀번호를 입력하세요" onkeypress="if(event.key==='Enter') checkAdminPassword()">
                 <br>
-                <button onclick="checkAdminPassword()" class="admin-btn">🔑 인증</button>
-                <button onclick="resetAdminAccess()" class="admin-btn" style="background: #dc3545; color: white;">🔄 초기화</button>
+                <button onclick="checkAdminPassword()" class="admin-btn">인증</button>
+                <button onclick="resetAdminAccess()" class="admin-btn" style="background: #D4271C; color: white;">초기화</button>
                 
                 
             </div>
             
             <!-- GitHub 저장소 설정 섹션 -->
             <div id="githubSetup" class="setup-section">
-                <h3>🔧 GitHub 저장소 설정</h3>
+                <h3>GitHub 저장소 설정</h3>
                 <p><strong>처음 사용 시 한 번만 설정하면 됩니다!</strong></p>
                 <p>1. GitHub에서 새 저장소를 만드세요 (예: 2029-date)</p>
                 <p>2. 저장소를 Public으로 설정하고 GitHub Pages를 활성화하세요</p>
@@ -2142,7 +2344,7 @@ css
                 <button onclick="testGitHubConnection()" class="setup-btn">연결 테스트</button>
                 
                 <p style="margin-top: 15px; font-size: 0.9em;">
-                    <strong>📌 GitHub Token 발급 방법:</strong><br>
+                    <strong>GitHub Token 발급 방법:</strong><br>
                     GitHub → Settings → Developer settings → Personal access tokens → Generate new token<br>
                     권한: repo (전체 저장소 접근 권한) 선택
                 </p>
@@ -2151,7 +2353,7 @@ css
             <!-- 파일 업로드 섹션 -->
             <div id="uploadSection" style="display: none;">
                 <div class="instructions">
-                    <h3>⚙️ 관리자 영역 (고1)</h3>
+                    <h3>관리자 영역 (고1)</h3>
                     <p>• 고1 엑셀 파일을 업로드하여 성적 데이터를 GitHub에 저장합니다</p>
                     <p>• 업로드된 데이터는 모든 기기에서 접근 가능합니다</p>
                     <p>• 지원 파일 형식: .xlsx, .xls</p>
@@ -2159,7 +2361,7 @@ css
                 </div>
                 
                 <div class="upload-area" id="uploadArea">
-                    <h3>📁 고1 엑셀 파일 업로드</h3>
+                    <h3>고1 엑셀 파일 업로드</h3>
                     <p>파일을 드래그앤드롭하거나 아래 버튼을 클릭하세요</p>
                     <input type="file" id="fileInput" accept=".xlsx,.xls" style="display: none;">
                     <button class="upload-btn" onclick="document.getElementById('fileInput').click()">파일 선택</button>
@@ -2167,7 +2369,7 @@ css
                 </div>
 
                 <div class="data-summary" style="display: block; margin-top: 20px;">
-                    <h3>🧮 문항별 정답률 · 선지 선택 비율</h3>
+                    <h3>문항별 정답률 · 선지 선택 비율</h3>
                     <label for="itemTestSelect">시험 </label>
                     <select id="itemTestSelect" onchange="renderItemStats()"></select>
                     <div id="itemStatsTable" style="overflow-x: auto; margin-top: 10px;"></div>
@@ -2181,7 +2383,7 @@ css
             <div class="status" id="statusMessage"></div>
             
             <div class="data-summary" id="dataSummary">
-                <h3>📊 업로드된 데이터 현황</h3>
+                <h3>업로드된 데이터 현황</h3>
                 <div class="summary-grid" id="summaryGrid"></div>
             </div>
         </div>
@@ -2216,7 +2418,7 @@ css
 
 
 
-// 🆕 정동민국어논술학원 실제 구글드라이브 학습 자료 링크 데이터베이스 (고1용)
+// 정동민국어논술학원 실제 구글드라이브 학습 자료 링크 데이터베이스 (고1용)
 var studyMaterialsDB = {
     "독서(인문,독서론)": {
         "기본": [
@@ -2390,7 +2592,7 @@ var studyMaterialsDB = {
     }
 };
 
-// 🆕 현재 주차 계산 함수
+// 현재 주차 계산 함수
 function getCurrentWeekNumber() {
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 1);
@@ -2398,12 +2600,12 @@ function getCurrentWeekNumber() {
     const oneWeek = 1000 * 60 * 60 * 24 * 7;
     const weekNumber = Math.ceil(diff / oneWeek);
     
-    console.log('📅 올해 ' + now.getFullYear() + '년 ' + weekNumber + '주차');
+    console.log('올해 ' + now.getFullYear() + '년 ' + weekNumber + '주차');
     
     return ((weekNumber - 1) % 52) + 1;
 }
 
-// 🆕 등급별 학습 계획 설정 함수
+// 등급별 학습 계획 설정 함수
 function getStudyPlanConfig(averageGrade) {
     if (averageGrade <= 2) {
         return {
@@ -2432,16 +2634,16 @@ function getStudyPlanConfig(averageGrade) {
     }
 }
 
-// 🆕 체계적인 학습 자료 추천
+// 체계적인 학습 자료 추천
 function getSystematicStudyMaterials(subjectName, currentScore, isMainStudy = true) {
     const materials = [];
     const currentWeek = getCurrentWeekNumber();
     
-   console.log('🔍 학습자료 검색:', subjectName, '점수:', currentScore);
+   console.log('학습자료 검색:', subjectName, '점수:', currentScore);
 
         // 고1 과목명 매핑
         const subjectMapping = {
-            '독서(인문,독서론)': ['독서(인문,독서론)', '독서(인문 이론)', '독서(인문이론)', '독서인문', '인문'],  // ✅ 배열로 수정
+            '독서(인문,독서론)': ['독서(인문,독서론)', '독서(인문 이론)', '독서(인문이론)', '독서인문', '인문'],  // 배열로 수정
             '독서(사회)': ['독서(사회)'],
             '독서(과학)': ['독서(과학)'],
             '문학(현대시)': ['문학(현대시)'],
@@ -2453,7 +2655,7 @@ function getSystematicStudyMaterials(subjectName, currentScore, isMainStudy = tr
         };
     
     const mappedSubject = subjectMapping[subjectName] || subjectName;
-    console.log('📝 매핑된 과목명:', subjectName, '→', mappedSubject);
+    console.log('매핑된 과목명:', subjectName, '→', mappedSubject);
     
     // 주 교재 추천
     if (isMainStudy && studyMaterialsDB[mappedSubject]) {
@@ -2517,7 +2719,7 @@ function getSystematicStudyMaterials(subjectName, currentScore, isMainStudy = tr
     return materials;
 }
 
-// 🆕 상세 학습 과제 생성 함수 (고1용)
+// 상세 학습 과제 생성 함수 (고1용)
 function getDetailedStudyTask(subject, currentScore) {
     const tasks = {
         '독서(인문,독서론)': {
@@ -2564,7 +2766,7 @@ function getDetailedStudyTask(subject, currentScore) {
     return currentScore < 60 ? subjectTasks.basic : subjectTasks.advanced;
 }
 
-// 🆕 자동 생성된 학습 계획서 표시 함수
+// 자동 생성된 학습 계획서 표시 함수
 function displayAutoGeneratedPlan(planData) {
     const planContainer = document.getElementById('autoGeneratedPlan');
     const { student, weakSubjects, weeklyPlan, config, averageGrade } = planData;
@@ -2579,7 +2781,7 @@ function displayAutoGeneratedPlan(planData) {
     planContainer.innerHTML = `
         <div class="advanced-study-plan">
             <div class="plan-document-header">
-                <h3>📋 ${student.name}님 맞춤 학습 계획서 (고1)</h3>
+                <h3>${student.name}님 맞춤 학습 계획서 (고1)</h3>
                 <div class="student-info-banner">
                     <strong>${student.name} 학생</strong> - 개인별 약점 분석 기반 최적화 계획
                 </div>
@@ -2587,7 +2789,7 @@ function displayAutoGeneratedPlan(planData) {
             
             <div class="improvement-analysis">
                 <h4 style="margin-bottom: 15px; color: rgba(255,255,255,0.95);">
-                    ⚠️ 우선 개선 과목 (상위 3개)
+                    우선 개선 과목 (상위 3개)
                 </h4>
                 
                 ${weakSubjects.map((subject, index) => {
@@ -2598,7 +2800,7 @@ function displayAutoGeneratedPlan(planData) {
                             <div class="subject-header">
                                 <div class="subject-name">${subject.name}</div>
                                 <div class="priority-badge priority-${subject.priority}">
-                                    ${subject.priority === 'high' ? '🔴 최우선' : subject.priority === 'medium' ? '🟡 중요' : '🔵 보통'}
+                                    ${subject.priority === 'high' ? '최우선' : subject.priority === 'medium' ? '중요' : '보통'}
                                 </div>
                             </div>
                             
@@ -2609,17 +2811,17 @@ function displayAutoGeneratedPlan(planData) {
                                 </div>
                             </div>
                             
-                            <div style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; padding: 15px; margin: 15px 0;">
-                                <h5 style="margin-bottom: 10px; color: rgba(255,255,255,0.95);">📋 취약영역 개념 클리닉</h5>
+                            <div style="background: rgba(255, 255, 255, 0.05); border-radius: 0; padding: 15px; margin: 15px 0;">
+                                <h5 style="margin-bottom: 10px; color: rgba(255,255,255,0.95);">취약영역 개념 클리닉</h5>
                                 <p style="color: rgba(255,255,255,0.85); line-height: 1.5; font-size: 0.9em;">${studyTask}</p>
                             </div>
                             
                             <div class="study-materials">
-                                <h5 style="margin-bottom: 10px;">📚 추천 학습 자료 다운로드 링크</h5>
+                                <h5 style="margin-bottom: 10px;">추천 학습 자료 다운로드 링크</h5>
                                 <div class="material-links">
                                     ${materials.map(material => `
                                         <a href="${material.url}" target="_blank" class="material-link">
-                                            ⬇️ ${material.name}
+                                            ${material.name}
                                         </a>
                                     `).join('')}
                                 </div>
@@ -2636,18 +2838,18 @@ function displayAutoGeneratedPlan(planData) {
                 <div class="motivation-text">
                     현재 ${averageGrade.toFixed(1)}등급에서 ${Math.max(1, Math.floor(averageGrade) - 1)}등급으로 향상하기 위한
                     체계적인 계획을 수립했습니다. 수능까지 남은 시간을 효율적으로 활용하여 반드시 목표를 달성할 수 있습니다! 
-                    정동민국어논술학원이 여러분의 성공을 응원합니다! 💪
+                    정동민국어논술학원이 여러분의 성공을 응원합니다! 
                 </div>
             </div>
         </div>
     `;
 }
 
-// 🆕 자동 생성된 학습 계획서 생성 (AI 분석 직후 호출)
+// 자동 생성된 학습 계획서 생성 (AI 분석 직후 호출)
 function generateAutoStudyPlan(student) {
     console.log('자동 학습 계획서 생성 시작:', student.name);
     
-    // 🔧 계획서 섹션 먼저 표시
+    // 계획서 섹션 먼저 표시
     document.getElementById('studyPlanSection').style.display = 'block';
     
     // AI 분석 결과 가져오기
@@ -2686,7 +2888,7 @@ function generateAutoStudyPlan(student) {
     document.getElementById('autoGeneratedPlan').style.display = 'block';
 }
 
-// 🆕 현실적인 주간 계획 생성
+// 현실적인 주간 계획 생성
 function generateRealisticWeeklyPlan(weakSubjects, averageGrade) {
     const config = getStudyPlanConfig(averageGrade);
     const days = ['월', '화', '수', '목', '금', '토', '일'];
@@ -2748,7 +2950,7 @@ function generateRealisticWeeklyPlan(weakSubjects, averageGrade) {
     return plan;
 }
 
-// 🆕 우수 학생용 계획서
+// 우수 학생용 계획서
 function displayExcellentStudentPlan(student) {
     const planContainer = document.getElementById('autoGeneratedPlan');
     const currentWeek = getCurrentWeekNumber();
@@ -2756,25 +2958,25 @@ function displayExcellentStudentPlan(student) {
     planContainer.innerHTML = `
         <div class="advanced-study-plan">
             <div class="plan-document-header">
-                <h3>🌟 우수 학생 맞춤 계획서 (고1)</h3>
+                <h3>우수 학생 맞춤 계획서 (고1)</h3>
                 <div class="student-info-banner">
                     <strong>${student.name} 학생</strong> - 모든 영역에서 뛰어난 성취도!
                 </div>
             </div>
             
-            <div style="text-align: center; padding: 30px; background: rgba(40,167,69,0.1); border-radius: 12px;">
-                <h4 style="color: #28a745; margin-bottom: 15px;">🎉 축하합니다!</h4>
+            <div style="text-align: center; padding: 30px; background: transparent; border-radius: 0;">
+                <h4 style="color: #141414; margin-bottom: 15px;">축하합니다!</h4>
                 <p style="line-height: 1.6; margin-bottom: 20px;">
                     현재 모든 과목에서 우수한 성취도를 보이고 있습니다.<br>
                     수능까지 현재 수준을 유지하며 실전 감각을 기르는 것을 추천합니다.
                 </p>
                 
                 <div class="study-materials">
-                    <h5 style="margin-bottom: 15px;">📚 추천 학습 자료</h5>
+                    <h5 style="margin-bottom: 15px;">추천 학습 자료</h5>
                     <div class="material-links">
                         ${studyMaterialsDB["종합모의고사"]["심화"].map(material => `
                             <a href="${material.url}" target="_blank" class="material-link">
-                                ⬇️ ${material.name}
+                                ${material.name}
                             </a>
                         `).join('')}
                     </div>
@@ -2784,14 +2986,14 @@ function displayExcellentStudentPlan(student) {
     `;
 }
 
-// 🆕 주간 스케줄 HTML 생성 함수
+// 주간 스케줄 HTML 생성 함수
 function createWeeklyScheduleHTML(weeklyPlan) {
     const days = ['월', '화', '수', '목', '금', '토', '일'];
     
     let html = `
         <div class="weekly-schedule-advanced">
             <h4 style="margin-bottom: 15px; color: rgba(255,255,255,0.95);">
-                📅 주간 맞춤 학습 스케줄
+                주간 맞춤 학습 스케줄
             </h4>
             <div style="margin-bottom: 20px; opacity: 0.9; line-height: 1.5;">
                 과목별 우선순위와 개인 약점을 고려하여 최적화된 주간 계획입니다.
@@ -2811,9 +3013,9 @@ function createWeeklyScheduleHTML(weeklyPlan) {
             let totalTime = 0;
             weeklyPlan[day].forEach(session => {
                 const priorityColor = {
-                    'high': 'rgba(220, 53, 69, 0.3)',
-                    'medium': 'rgba(255, 193, 7, 0.3)',
-                    'low': 'rgba(23, 162, 184, 0.3)'
+                    'high': 'transparent',
+                    'medium': 'transparent',
+                    'low': 'transparent'
                 };
                 
                 html += `
@@ -2835,9 +3037,9 @@ function createWeeklyScheduleHTML(weeklyPlan) {
     
     html += `
         </div>
-        <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; text-align: center;">
-            <strong>💡 학습 효과 극대화 팁</strong><br>
-            🔴 최우선 과목은 집중력이 좋은 저녁 시간에 | 🟡 중요 과목은 컨디션이 좋은 주말에 | 학습 자료는 위 추천학습자료 다운로드 링크를 이용하세요.
+        <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 0; text-align: center;">
+            <strong>학습 효과 극대화 팁</strong><br>
+            최우선 과목은 집중력이 좋은 저녁 시간에 | 중요 과목은 컨디션이 좋은 주말에 | 학습 자료는 위 추천학습자료 다운로드 링크를 이용하세요.
         </div>
     </div>
     `;
@@ -2845,7 +3047,7 @@ function createWeeklyScheduleHTML(weeklyPlan) {
     return html;
 }
 
-// 🆕 등급별 목표 점수 반환 함수
+// 등급별 목표 점수 반환 함수
 function getTargetScoreFromGrade(grade) {
     const scoreMap = {
         '1': 92,
@@ -2860,11 +3062,11 @@ function getTargetScoreFromGrade(grade) {
         // 학업 운세 데이터
         var fortuneData = {
             excellent: {
-                icon: "⭐",
+                icon: "",
                 title: "최고의 학습일!",
-                stars: "⭐⭐⭐⭐⭐",
+                stars: "★★★★★",
                 color: "from-yellow-400 to-orange-500",
-                bgColor: "rgba(255, 215, 0, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "새로운 개념을 배우기에 최적의 날입니다",
                     "어려운 문제에 도전해보세요",
@@ -2883,11 +3085,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             verygood: {
-                icon: "🌟",
+                icon: "",
                 title: "매우 좋은 학습 기운!",
-                stars: "⭐⭐⭐⭐",
+                stars: "★★★★",
                 color: "from-orange-400 to-red-500",
-                bgColor: "rgba(255, 140, 0, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "집중력이 뛰어난 날입니다",
                     "중요한 개념 정리에 최적입니다",
@@ -2906,11 +3108,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             good: {
-                icon: "📈",
+                icon: "",
                 title: "좋은 학습 흐름!",
-                stars: "⭐⭐⭐⭐",
+                stars: "★★★★",
                 color: "from-green-400 to-blue-500",
-                bgColor: "rgba(76, 175, 80, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "꾸준한 복습이 큰 효과를 가져올 것입니다",
                     "계획을 세워 체계적으로 공부하세요",
@@ -2929,11 +3131,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             normal: {
-                icon: "📚",
+                icon: "",
                 title: "평범한 학습일",
-                stars: "⭐⭐⭐",
+                stars: "★★★",
                 color: "from-blue-400 to-purple-500",
-                bgColor: "rgba(33, 150, 243, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "기본기를 다지는 데 집중하세요",
                     "무리하지 말고 꾸준히 공부하는 것이 좋습니다",
@@ -2952,11 +3154,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             caution: {
-                icon: "⚡",
+                icon: "",
                 title: "주의가 필요한 학습일",
-                stars: "⭐⭐",
+                stars: "★★",
                 color: "from-yellow-500 to-orange-600",
-                bgColor: "rgba(255, 152, 0, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "산만해지기 쉬우니 환경을 정리하세요",
                     "짧은 시간이라도 집중해서 공부하세요",
@@ -2975,11 +3177,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             challenging: {
-                icon: "🧠",
+                icon: "",
                 title: "집중력 필요한 날",
-                stars: "⭐⭐",
+                stars: "★★",
                 color: "from-purple-400 to-pink-500",
-                bgColor: "rgba(156, 39, 176, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "어려운 내용은 피하고 쉬운 것부터 시작하세요",
                     "친구나 선생님과 함께 공부하면 도움이 될 것입니다",
@@ -2998,11 +3200,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             review: {
-                icon: "🔄",
+                icon: "",
                 title: "복습의 날!",
-                stars: "⭐⭐⭐",
+                stars: "★★★",
                 color: "from-indigo-400 to-purple-600",
-                bgColor: "rgba(103, 58, 183, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "새로운 내용보다 기존 내용 정리에 집중하세요",
                     "오답노트를 점검하기 좋은 날입니다",
@@ -3021,11 +3223,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             creative: {
-                icon: "🎨",
+                icon: "",
                 title: "창의적 학습일!",
-                stars: "⭐⭐⭐⭐",
+                stars: "★★★★",
                 color: "from-pink-400 to-red-500",
-                bgColor: "rgba(233, 30, 99, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "마인드맵으로 개념을 정리해보세요",
                     "다양한 학습 방법을 시도해보세요",
@@ -3044,11 +3246,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             motivated: {
-                icon: "🔥",
+                icon: "",
                 title: "동기부여 최고조!",
-                stars: "⭐⭐⭐⭐⭐",
+                stars: "★★★★★",
                 color: "from-red-500 to-pink-600",
-                bgColor: "rgba(244, 67, 54, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "목표를 높게 설정하고 도전해보세요",
                     "평소 어려워했던 과목에 집중하세요",
@@ -3067,11 +3269,11 @@ function getTargetScoreFromGrade(grade) {
                 ]
             },
             calm: {
-                icon: "🧘",
+                icon: "",
                 title: "차분한 학습일",
-                stars: "⭐⭐⭐",
+                stars: "★★★",
                 color: "from-teal-400 to-blue-600",
-                bgColor: "rgba(0, 150, 136, 0.1)",
+                bgColor: "transparent",
                 advice: [
                     "차분하게 한 단계씩 공부해나가세요",
                     "명상이나 깊은 호흡으로 마음을 가라앉히세요",
@@ -3142,54 +3344,54 @@ function getTargetScoreFromGrade(grade) {
             if (!fortune) return '';
             
             return `
-                <div class="ai-analysis" style="background: linear-gradient(135deg, ${fortune.data.bgColor}, ${fortune.data.bgColor}); color: #333; margin: 20px 0; padding: 15px 20px;">
+                <div class="ai-analysis" style="background: transparent; color: #141414; margin: 20px 0; padding: 15px 20px;">
                     <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: space-between;">
                         
                         <!-- 제목 영역 -->
                         <div style="display: flex; align-items: center; gap: 10px; min-width: 200px;">
                             <span style="font-size: 1.6em;">${fortune.data.icon}</span>
                             <div>
-                                <div style="color: #555; font-size: 0.85em;">${name}님의 학업 운세</div>
-                                <div style="font-weight: bold; color: #333; font-size: 1.05em;">${fortune.data.title} <span style="color: #FFD700; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">${fortune.data.stars}</span></div>
+                                <div style="color: #8C8C8C; font-size: 0.85em;">${name}님의 학업 운세</div>
+                                <div style="font-weight: bold; color: #141414; font-size: 1.05em;">${fortune.data.title} <span style="color: #141414; text-shadow: none;">${fortune.data.stars}</span></div>
                             </div>
                         </div>
                         
                         <!-- 학습 조언 (1개) -->
-                        <div style="background: rgba(255,255,255,0.35); border-radius: 8px; padding: 8px 14px; flex: 1; min-width: 150px; max-width: 280px;">
-                            <span style="font-size: 0.75em; color: #666;">💡 조언</span>
-                            <div style="color: #444; font-size: 0.88em; font-weight: 500;">${fortune.data.selectedAdvice[0]}</div>
+                        <div style="background: rgba(255,255,255,0.35); border-radius: 0; padding: 8px 14px; flex: 1; min-width: 150px; max-width: 280px;">
+                            <span style="font-size: 0.75em; color: #8C8C8C;">조언</span>
+                            <div style="color: #141414; font-size: 0.88em; font-weight: 500;">${fortune.data.selectedAdvice[0]}</div>
                         </div>
                         
                         <!-- 행운의 과목 -->
-                        <div style="background: rgba(255,255,255,0.35); border-radius: 8px; padding: 8px 14px; min-width: 120px;">
-                            <div style="font-size: 0.75em; color: #666; margin-bottom: 4px;">📚 행운의 과목</div>
+                        <div style="background: rgba(255,255,255,0.35); border-radius: 0; padding: 8px 14px; min-width: 120px;">
+                            <div style="font-size: 0.75em; color: #8C8C8C; margin-bottom: 4px;">행운의 과목</div>
                             <div style="display: flex; gap: 5px; flex-wrap: wrap;">
                                 ${fortune.data.selectedSubjects.map(subject => 
-                                    `<span style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 3px 8px; border-radius: 10px; font-size: 0.78em; font-weight: bold;">${subject}</span>`
+                                    `<span style="background: transparent; color: #141414; padding: 3px 8px; border-radius: 0; font-size: 0.78em; font-weight: bold;">${subject}</span>`
                                 ).join('')}
                             </div>
                         </div>
                         
                         <!-- 행운의 번호 -->
-                        <div style="background: rgba(255,255,255,0.35); border-radius: 8px; padding: 8px 14px; text-align: center; min-width: 80px;">
-                            <div style="font-size: 0.75em; color: #666; margin-bottom: 4px;">🍀 행운의 번호</div>
-                            <span style="background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; font-size: 1.4em; font-weight: bold; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">${fortune.data.luckyNumber}</span>
+                        <div style="background: rgba(255,255,255,0.35); border-radius: 0; padding: 8px 14px; text-align: center; min-width: 80px;">
+                            <div style="font-size: 0.75em; color: #8C8C8C; margin-bottom: 4px;">행운의 번호</div>
+                            <span style="background: transparent; color: #141414; font-size: 1.4em; font-weight: bold; width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; box-shadow: none;">${fortune.data.luckyNumber}</span>
                         </div>
                         
                         <!-- 오늘의 팁 -->
-                        <div style="background: rgba(255,255,255,0.35); border-radius: 8px; padding: 8px 14px; flex: 1; min-width: 150px; max-width: 250px;">
-                            <span style="font-size: 0.75em; color: #666;">🎯 오늘의 팁</span>
-                            <div style="color: #444; font-size: 0.85em; font-style: italic;">"${fortune.data.selectedTip}"</div>
+                        <div style="background: rgba(255,255,255,0.35); border-radius: 0; padding: 8px 14px; flex: 1; min-width: 150px; max-width: 250px;">
+                            <span style="font-size: 0.75em; color: #8C8C8C;">오늘의 팁</span>
+                            <div style="color: #141414; font-size: 0.85em; font-style: italic;">"${fortune.data.selectedTip}"</div>
                         </div>
                         
                     </div>
                     
                     <!-- 하단 링크 -->
                     <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.08); display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; align-items: center;">
-                        <span style="font-size: 0.78em; color: #888;">💡 운세는 재미로만! 진짜 중요한 건 꾸준한 노력입니다</span>
-                        <a href="https://www.instagram.com/swwweet.daekun/" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(45deg, #405DE6, #C13584, #FD1D1D); color: white; text-decoration: none; padding: 6px 14px; border-radius: 15px; font-weight: bold; font-size: 0.82em;">📸 대건T Instagram</a>
-                        <a href="https://jdmedu.github.io/susi/" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(45deg, #FF9800, #FB8C00); color: white; text-decoration: none; padding: 6px 14px; border-radius: 15px; font-weight: bold; font-size: 0.82em;">📝 수시 합격 예측</a>
-                    <a href="https://jdmedu.github.io/jungsi/" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(45deg, #2196F3, #42A5F5); color: white; text-decoration: none; padding: 6px 14px; border-radius: 15px; font-weight: bold; font-size: 0.82em;">📊 정시 합격예측</a>
+                        <span style="font-size: 0.78em; color: #8C8C8C;">운세는 재미로만! 진짜 중요한 건 꾸준한 노력입니다</span>
+                        <a href="https://www.instagram.com/swwweet.daekun/" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; background: transparent; color: #141414; text-decoration: none; padding: 6px 14px; border-radius: 0; font-weight: bold; font-size: 0.82em;">대건T Instagram</a>
+                        <a href="https://jdmedu.github.io/susi/" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; background: transparent; color: #141414; text-decoration: none; padding: 6px 14px; border-radius: 0; font-weight: bold; font-size: 0.82em;">수시 합격 예측</a>
+                    <a href="https://jdmedu.github.io/jungsi/" target="_blank" style="display: inline-flex; align-items: center; gap: 5px; background: transparent; color: #141414; text-decoration: none; padding: 6px 14px; border-radius: 0; font-weight: bold; font-size: 0.82em;">정시 합격예측</a>
                     </div>
                 </div>
             `;
@@ -3256,11 +3458,11 @@ function getGradeFromPercentile(percentile) {
 
 // 시험 회차에 따른 등급컷 조정 함수 (현재 비활성화)
 function adjustScoreByTestNumber(score, testName) {
-    // ⭐ 조정 없음 - 항상 원점수 그대로 반환 ⭐
+    // 조정 없음 - 항상 원점수 그대로 반환 
     return score;
 }
 
-// 📊 통계 계산 함수
+// 통계 계산 함수
        function calculateStatistics(student) {
     var grades = student.grades;
     var gradeKeys = Object.keys(grades);
@@ -3275,7 +3477,7 @@ function adjustScoreByTestNumber(score, testName) {
     gradeKeys.forEach(function(testName) {
         var gradeData = grades[testName];
         
-        // ⭐ 등급 계산 추가 ⭐
+        // 등급 계산 추가 
         var finalGrade = gradeData.grade;
         if (!finalGrade || finalGrade === null || finalGrade === 'null' || finalGrade === 0) {
             // 1순위: 등급컷
@@ -3301,8 +3503,8 @@ function adjustScoreByTestNumber(score, testName) {
             
            var avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b) / scores.length) : 0;
 var avgGrade = gradeValues.length > 0 ? Math.round(gradeValues.reduce((a, b) => a + b) / gradeValues.length * 10) / 10 : 0;
-var bestScore = scoreValues.length > 0 ? Math.max(...scoreValues) : 0;  // ⭐ 추가!
-var bestGrade = gradeValues.length > 0 ? Math.min(...gradeValues) : 9;  // ⭐ 하나만 남김!
+var bestScore = scoreValues.length > 0 ? Math.max(...scoreValues) : 0;  // 추가!
+var bestGrade = gradeValues.length > 0 ? Math.min(...gradeValues) : 9;  // 하나만 남김!
 var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
             
             // 성적 변화 계산
@@ -3329,7 +3531,7 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
                 ? Math.round(recent4Scores.reduce((a, b) => a + b) / recent4Scores.length) 
                 : avgScore;
             
-            // ⭐⭐⭐ 백분위 계산 로직 수정 ⭐⭐⭐
+            // 백분위 계산 로직 수정 
             var percentile = 0;
             var recentTestName = recentTests.length > 0 ? recentTests[recentTests.length - 1] : '';
             
@@ -3343,7 +3545,7 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
                     if (grade) {
                         percentile = getPercentileFromGrade(grade);
                         hasGradeCut = true;
-                        console.log('✅ 백분위(등급컷 기반):', percentile, '등급:', grade);
+                        console.log('백분위(등급컷 기반):', percentile, '등급:', grade);
                         break;
                     }
                 }
@@ -3352,7 +3554,7 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
             // 등급컷이 없으면 기존 백분위 테이블 사용
             if (!hasGradeCut) {
                 percentile = calculatePercentile(recent4Avg, recentSubjectType, recentTestName);
-                console.log('✅ 백분위(임의 테이블):', percentile);
+                console.log('백분위(임의 테이블):', percentile);
             }
             
             // 백분위 기반 평균 등급 계산
@@ -3395,7 +3597,7 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
             return gradeToPercentile[grade] || 0;
         }
         
-        // 🏆 확장된 뱃지 시스템 (43개)
+        // 확장된 뱃지 시스템 (43개)
         function generateAchievementBadges(student, stats) {
     var badges = [];
     var grades = student.grades;
@@ -3407,7 +3609,7 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
     var scores = [];
     var gradeValues = [];
     var subjectScores = {};
-    var subjectRatios = {}; // ✅ 여기서 초기화
+    var subjectRatios = {}; // 여기서 초기화
     
     gradeKeys.forEach(function(testName) {
         var gradeData = grades[testName];
@@ -3422,7 +3624,7 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
             });
         }
         
-        // ✅ 과목별 비율 수집 추가
+        // 과목별 비율 수집 추가
         if (gradeData.ratios) {
             Object.keys(gradeData.ratios).forEach(function(subject) {
                 if (!subjectRatios[subject]) subjectRatios[subject] = [];
@@ -3461,80 +3663,80 @@ var latestScore = scores.length > 0 ? scores[scores.length - 1] : 0;
         if (avg >= 90) excellentSubjects++;
     });
     
-// 🏆 뱃지 조건 체크 (43개 뱃지, 중복 가능)
+// 뱃지 조건 체크 (43개 뱃지, 중복 가능)
 
 // 1. 등급 관련 뱃지 (5개)
 if (stats.bestGrade === 1) {
-    badges.push({ icon: "👑", text: "1등급 달성", type: "grade", isNew: true });
+    badges.push({ icon: "", text: "1등급 달성", type: "grade", isNew: true });
 }
 if (stats.bestGrade <= 2) {
-    badges.push({ icon: "🏆", text: "상위등급 달성", type: "grade", isNew: false });
+    badges.push({ icon: "", text: "상위등급 달성", type: "grade", isNew: false });
 }
 if (stats.bestGrade <= 3) {
-    badges.push({ icon: "🥉", text: "3등급 이내", type: "grade", isNew: false });
+    badges.push({ icon: "", text: "3등급 이내", type: "grade", isNew: false });
 }
 if (stats.avgGrade <= 2.5) {
-    badges.push({ icon: "🎪", text: "우수한 등급", type: "grade", isNew: false });
+    badges.push({ icon: "", text: "우수한 등급", type: "grade", isNew: false });
 }
 if (stats.avgGrade <= 1.5) {
-    badges.push({ icon: "🎖️", text: "최상위 등급", type: "grade", isNew: true });
+    badges.push({ icon: "", text: "최상위 등급", type: "grade", isNew: true });
 }
 
 // 2. 점수 관련 뱃지 (4개)
 if (stats.bestScore >= 95) {
-    badges.push({ icon: "💎", text: "95점 이상", type: "score", isNew: true });
+    badges.push({ icon: "", text: "95점 이상", type: "score", isNew: true });
 }
 if (stats.avgScore >= 85) {
-    badges.push({ icon: "🌟", text: "고득점자", type: "score", isNew: false });
+    badges.push({ icon: "", text: "고득점자", type: "score", isNew: false });
 }
 if (stats.bestScore >= 100) {
-    badges.push({ icon: "🎯", text: "만점 달성", type: "score", isNew: true });
+    badges.push({ icon: "", text: "만점 달성", type: "score", isNew: true });
 }
 if (stats.avgScore >= 90) {
-    badges.push({ icon: "✨", text: "우수한 평균", type: "score", isNew: false });
+    badges.push({ icon: "", text: "우수한 평균", type: "score", isNew: false });
 }
 
 // 3. 성적 변화 뱃지 (3개)
 if (maxConsecutiveUp >= 2) {
-    badges.push({ icon: "🔥", text: "연속 상승", type: "trend", isNew: true });
+    badges.push({ icon: "", text: "연속 상승", type: "trend", isNew: true });
 }
 if (maxConsecutiveUp >= 3) {
-    badges.push({ icon: "🚀", text: "3연속 상승", type: "trend", isNew: true });
+    badges.push({ icon: "", text: "3연속 상승", type: "trend", isNew: true });
 }
 if (maxConsecutiveUp >= 4) {
-    badges.push({ icon: "🌪️", text: "4연속 폭풍 상승", type: "trend", isNew: true });
+    badges.push({ icon: "", text: "4연속 폭풍 상승", type: "trend", isNew: true });
 }
 
 // 4. 점수 개선 뱃지 (3개) - 최근 변화량
 if (stats.scoreChange >= 15) {
-    badges.push({ icon: "📈", text: "대폭 상승", type: "improvement", isNew: true });
+    badges.push({ icon: "", text: "대폭 상승", type: "improvement", isNew: true });
 }
 if (stats.scoreChange >= 25) {
-    badges.push({ icon: "⚡", text: "폭발적 상승", type: "improvement", isNew: true });
+    badges.push({ icon: "", text: "폭발적 상승", type: "improvement", isNew: true });
 }
 if (stats.scoreChange >= 35) {
-    badges.push({ icon: "🎆", text: "기적의 상승", type: "improvement", isNew: true });
+    badges.push({ icon: "", text: "기적의 상승", type: "improvement", isNew: true });
 }
 
 // 5. 출석 및 성실성 뱃지 (3개)
 if (stats.testCount >= 5) {
-    badges.push({ icon: "⭐", text: "성실한 응시", type: "attendance", isNew: false });
+    badges.push({ icon: "", text: "성실한 응시", type: "attendance", isNew: false });
 }
 if (stats.testCount >= 8) {
-    badges.push({ icon: "💪", text: "꾸준한 도전", type: "attendance", isNew: false });
+    badges.push({ icon: "", text: "꾸준한 도전", type: "attendance", isNew: false });
 }
 if (stats.testCount === stats.totalTests) {
-    badges.push({ icon: "🏅", text: "완벽한 출석", type: "attendance", isNew: true });
+    badges.push({ icon: "", text: "완벽한 출석", type: "attendance", isNew: true });
 }
 
 // 7. 안정성 뱃지 (2개)
 if (scores.length >= 3) {
     var scoreVariance = calculateVariance(scores);
     if (scoreVariance < 50) {
-        badges.push({ icon: "🛡️", text: "안정적 성취", type: "stability", isNew: false });
+        badges.push({ icon: "", text: "안정적 성취", type: "stability", isNew: false });
     }
     if (scoreVariance < 25) {
-        badges.push({ icon: "🏰", text: "완벽한 안정", type: "stability", isNew: true });
+        badges.push({ icon: "", text: "완벽한 안정", type: "stability", isNew: true });
     }
 }
 
@@ -3551,18 +3753,18 @@ if (scores.length >= 3) {
     }
     
     if (maxConsecutiveGrade1 >= 5) {
-        badges.push({ icon: "👑", text: "1등급 마스터", type: "grade", isNew: true });
+        badges.push({ icon: "", text: "1등급 마스터", type: "grade", isNew: true });
     }
 
 // 9. 회복/성장 뱃지 (2개)
 if (maxConsecutiveDown >= 2 && consecutiveUp >= 2) {
-    badges.push({ icon: "🔄", text: "극적 회복", type: "recovery", isNew: true });
+    badges.push({ icon: "", text: "극적 회복", type: "recovery", isNew: true });
 }
 if (scores.length >= 5 && scores[scores.length-1] > scores[0] + 20) {
-    badges.push({ icon: "📊", text: "장기 성장", type: "recovery", isNew: false });
+    badges.push({ icon: "", text: "장기 성장", type: "recovery", isNew: false });
 }
 
-// ========== 🆕 새로 추가된 뱃지들 ==========
+// ========== 새로 추가된 뱃지들 ==========
 
 // 10. 한 번의 큰 점프 뱃지 (3개)
 var maxSingleJump = 0;
@@ -3574,13 +3776,13 @@ if (scores.length >= 2) {
     
     // 한 번의 큰 점프 뱃지
     if (maxSingleJump >= 35) {
-        badges.push({ icon: "🌈", text: "놀라운 점프", type: "single-jump", isNew: true });
+        badges.push({ icon: "", text: "놀라운 점프", type: "single-jump", isNew: true });
     }
     if (maxSingleJump >= 25) {
-        badges.push({ icon: "🎢", text: "큰 도약", type: "single-jump", isNew: false });
+        badges.push({ icon: "", text: "큰 도약", type: "single-jump", isNew: false });
     }
     if (maxSingleJump >= 15) {
-        badges.push({ icon: "📍", text: "성공적 점프", type: "single-jump", isNew: false });
+        badges.push({ icon: "", text: "성공적 점프", type: "single-jump", isNew: false });
     }
 }
 
@@ -3593,7 +3795,7 @@ if (scores.length >= 3) {
     var maxIndex = scores.lastIndexOf(maxScore);
     
     if (minIndex < maxIndex && (maxScore - minScore) >= 40) {
-        badges.push({ icon: "🔄", text: "역전의 스토리", type: "total-growth", isNew: true });
+        badges.push({ icon: "", text: "역전의 스토리", type: "total-growth", isNew: true });
     }
     
     // 안정적 상승 (전체적으로 꾸준히 오름)
@@ -3608,7 +3810,7 @@ if (scores.length >= 3) {
     var totalChange = lastScore - firstScore;
     
     if (upwardRatio >= 0.8 && totalChange >= 15) {
-        badges.push({ icon: "🚀", text: "꾸준한 상승세", type: "total-growth", isNew: false });
+        badges.push({ icon: "", text: "꾸준한 상승세", type: "total-growth", isNew: false });
     }
 }
 
@@ -3653,7 +3855,7 @@ if (scores.length >= 3) {
         
         if (hasConsecutive4Perfect) {
             badges.push({ 
-                icon: "🏆", 
+                icon: "", 
                 text: targetSubject + " 마스터", 
                 type: "subject-master", 
                 isNew: true 
@@ -3665,15 +3867,15 @@ if (scores.length >= 3) {
     
     // 13. 종합 뱃지 (3개)
     if (subjectMasters.length >= 3) {
-        badges.push({ icon: "🎓", text: "국어 올라운더", type: "subject-master", isNew: true });
+        badges.push({ icon: "", text: "국어 올라운더", type: "subject-master", isNew: true });
     }
     if (window.itemMeta) badges = badges.concat(typeBadges(student));  // 문제 유형 뱃지
 
     if (subjectMasters.length >= 5) {
-        badges.push({ icon: "📚", text: "국어 마에스트로", type: "subject-master", isNew: true });
+        badges.push({ icon: "", text: "국어 마에스트로", type: "subject-master", isNew: true });
     }
     if (subjectMasters.length >= SUBJECT_ORDER.length) {
-        badges.push({ icon: "👑", text: "국어 레전더리", type: "subject-master", isNew: true });
+        badges.push({ icon: "", text: "국어 레전더리", type: "subject-master", isNew: true });
     }
     
     // 
@@ -3772,10 +3974,10 @@ function showBadgeTooltip(event, badgeText) {
     
     // 툴팁 생성
     var tooltip = document.createElement('div');
-    tooltip.className = 'badge-tooltip visible';  /* ⭐ visible 클래스 미리 추가 ⭐ */
+    tooltip.className = 'badge-tooltip visible';  /* visible 클래스 미리 추가 */
     tooltip.innerHTML = '<strong>' + badgeText + '</strong><br>' + description;
     
-    /* ⭐ 스타일 직접 설정 ⭐ */
+    /* 스타일 직접 설정 */
     tooltip.style.position = 'fixed';
     tooltip.style.background = 'rgba(0, 0, 0, 0.95)';
     tooltip.style.color = 'white';
@@ -3794,11 +3996,11 @@ function showBadgeTooltip(event, badgeText) {
     var isMobile = window.innerWidth <= 768;
     console.log('isMobile:', isMobile);
     
-    /* ⭐ 뱃지 요소 찾기 (클릭된 요소의 부모일 수도 있음) ⭐ */
+    /* 뱃지 요소 찾기 (클릭된 요소의 부모일 수도 있음) */
     var badgeElement = event.target.closest('.achievement-badge') || event.target;
     var rect = badgeElement.getBoundingClientRect();
     
-    /* ⭐ 위치 계산 개선 ⭐ */
+    /* 위치 계산 개선 */
     var tooltipWidth = tooltip.offsetWidth;
     var left = rect.left + (rect.width / 2) - (tooltipWidth / 2);
     var top = rect.top - tooltip.offsetHeight - 10;
@@ -3876,7 +4078,7 @@ function addBadgeTooltipEvents() {
             .replace(/\s+/g, ' ')
             .trim();
         
-        // ⭐ 이모지 제거 추가 ⭐
+        // 이모지 제거 추가 
         badgeText = badgeText.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
         
         console.log('뱃지 설정:', index, '"' + badgeText + '"');
@@ -3909,7 +4111,7 @@ document.addEventListener('click', function(e) {
     }
 });
         
-            // 📅 D-day 계산
+            // D-day 계산
         function calculateDday() {
             var today = new Date();
             
@@ -3926,7 +4128,7 @@ document.addEventListener('click', function(e) {
             };
         }
                 
-        // 📈 성적 그래프 생성
+        // 성적 그래프 생성
         function createGradeChart(student) {
             var grades = student.grades;
             var gradeKeys = Object.keys(grades);
@@ -3950,16 +4152,16 @@ document.addEventListener('click', function(e) {
                     {
                         label: '점수',
                         data: scoreData,
-                        borderColor: '#667eea',
-                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderColor: '#141414',
+                        backgroundColor: 'transparent',
                         tension: 0.4,
                         yAxisID: 'y'
                     },
                     {
                         label: '등급',
                         data: gradeData,
-                        borderColor: '#ef4444',
-                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderColor: '#D4271C',
+                        backgroundColor: 'transparent',
                         tension: 0.4,
                         yAxisID: 'y1'
                     }
@@ -3975,14 +4177,14 @@ document.addEventListener('click', function(e) {
             
             if (!stats) return '';
             
-            var changeIcon = stats.scoreChange > 0 ? '📈' : stats.scoreChange < 0 ? '📉' : '➡️';
+            var changeIcon = stats.scoreChange > 0 ? '' : stats.scoreChange < 0 ? '' : '';
             var changeClass = stats.scoreChange > 0 ? 'stat-positive' : stats.scoreChange < 0 ? 'stat-negative' : 'stat-neutral';
             var changeText = stats.scoreChange > 0 ? '+' + stats.scoreChange : stats.scoreChange;
             
             return `
                 <!-- D-day 카운터 -->
                 <div class="dday-counter">
-                    <div class="dday-text">📚 수능까지</div>
+                    <div class="dday-text">수능까지</div>
                     <div class="dday-number">D-${dday.days}</div>
                     <div style="font-size: 1.1em; opacity: 0.85; margin-top: -5px;">남은 주차: ${dday.weeks}주</div>
                     <div style="font-size: 1em; opacity: 0.9;">
@@ -3991,9 +4193,9 @@ document.addEventListener('click', function(e) {
                 </div>
                 
                 <div class="dashboard-grid">
-                    <!-- 📊 통계 대시보드 -->
+                    <!-- 통계 대시보드 -->
                     <div class="dashboard-card">
-                        <h3>📊 성적 통계</h3>
+                        <h3>성적 통계</h3>
                         <div class="stat-item">
                             <span class="stat-label">평균 점수</span>
                             <span class="stat-value">${stats.avgScore}점</span>
@@ -4012,7 +4214,7 @@ document.addEventListener('click', function(e) {
                         </div>
                        <div class="stat-item">
                         <span class="stat-label">예상 백분위</span>
-                        <span class="stat-value" style="color: ${stats.percentile >= 90 ? '#e74c3c' : stats.percentile >= 70 ? '#f39c12' : stats.percentile >= 50 ? '#2ecc71' : '#95a5a6'}">
+                        <span class="stat-value" style="color: ${stats.percentile >= 90 ? '#D4271C' : stats.percentile >= 70 ? '#141414' : stats.percentile >= 50 ? '#141414' : '#8C8C8C'}">
                             ${stats.percentile}%
                         </span>
                     </div>
@@ -4022,29 +4224,29 @@ document.addEventListener('click', function(e) {
                         </div>
                     </div>
                     
-                    <!-- 🏆 성취 뱃지 -->
+                    <!-- 성취 뱃지 -->
 <div class="dashboard-card">
-    <h3>🏆 성취 뱃지 <span style="font-size: 0.8em; color: #667eea;">(${badges.length}/40개 획득)</span></h3>
+    <h3>성취 뱃지 <span style="font-size: 0.8em; color: #141414;">(${badges.length}/40개 획득)</span></h3>
     
   
 ${badges.length >= 25 ? 
 `<div style="
-    background: linear-gradient(135deg, #ffd700, #ff8c00); 
-    color: white; 
-    border-radius: 15px; 
+    background: transparent; 
+    color: #141414; 
+    border-radius: 0; 
     padding: 20px; 
     margin: 15px 0; 
     text-align: center; 
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+    box-shadow: none;
     animation: grand-master-glow 2s infinite alternate;
 ">
-    <div style="font-size: 2em; margin-bottom: 10px;">🎊👑🎊</div>
+    <div style="font-size: 2em; margin-bottom: 10px;"></div>
     <div style="font-size: 1.3em; font-weight: bold; margin-bottom: 10px;">
         축하합니다! 25개 이상의 뱃지를 모아<br>
-        국어 그랜드 마스터가 되었습니다! 🏆
+        국어 그랜드 마스터가 되었습니다! 
     </div>
     <div style="font-size: 1.1em; opacity: 0.95;">
-        이대건T에게 가서 선물을 수령하세요! 🎁
+        이대건T에게 가서 선물을 수령하세요! 
     </div>
 </div>` : 
 ''
@@ -4052,10 +4254,10 @@ ${badges.length >= 25 ?
 
 ${badges.length > 0 ? 
     '<div class="badge-summary">총 ' + badges.length + '/40개의 뱃지를 획득했습니다!' + 
-    (badges.length >= 35 ? ' 🔥 사랑한다 제자야. 고생많았어.!' : 
-     badges.length >= 30 ? ' 🌟 거의 다 모았어요!' : 
-     badges.length >= 25 ? ' 🎉 국어 그랜드 마스터 달성!' : 
-     badges.length >= 15 ? ' 💪 많이 모았네요!' : '') + '</div>' +
+    (badges.length >= 35 ? ' 사랑한다 제자야. 고생많았어.!' : 
+     badges.length >= 30 ? ' 거의 다 모았어요!' : 
+     badges.length >= 25 ? ' 국어 그랜드 마스터 달성!' : 
+     badges.length >= 15 ? ' 많이 모았네요!' : '') + '</div>' +
         '<div class="badge-container">' +
         badges.map(badge => 
            `<div class="achievement-badge ${badge.type} ${badge.isNew ? 'badge-new' : ''}">
@@ -4065,18 +4267,18 @@ ${badges.length > 0 ?
             </div>`
         ).join('') +
         '</div>' :
-    '<p style="color: #666; text-align: center; padding: 20px;">더 많은 시험을 치르면 뱃지를 획득할 수 있어요!</p>'
+    '<p style="color: #8C8C8C; text-align: center; padding: 20px;">더 많은 시험을 치르면 뱃지를 획득할 수 있어요!</p>'
     }
     
-    <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; font-size: 0.85em; text-align: center;">
-        💡 <strong>PC:</strong> 뱃지를 클릭하면 설명을 볼 수 있어요!<br>
-        📱 <strong>모바일:</strong> 뱃지를 터치하면 설명이 나타납니다!
+    <div style="margin-top: 15px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 0; font-size: 0.85em; text-align: center;">
+        <strong>PC:</strong> 뱃지를 클릭하면 설명을 볼 수 있어요!<br>
+        <strong>모바일:</strong> 뱃지를 터치하면 설명이 나타납니다!
     </div>
 </div>
                 
-                <!-- 📈 성적 변화 그래프 -->
+                <!-- 성적 변화 그래프 -->
                 <div class="dashboard-card" style="margin: 25px 0;">
-                    <h3>📈 성적 변화 추이</h3>
+                    <h3>성적 변화 추이</h3>
                     <div class="chart-container">
                         <canvas id="gradeChart_${student.attendanceNumber}"></canvas>
                     </div>
@@ -4143,8 +4345,8 @@ ${badges.length > 0 ?
         var isAdminAuthenticated = false;
         
         var maxScores = {}; // 하드코딩된 값 제거, 엑셀에서 추출한 값만 사용
-        var gradeCutData = {}; // ✅ 추가
-        var gradeCutCount = 0; // ✅ 추가 (대시보드에서 사용)
+        var gradeCutData = {}; // 추가
+        var gradeCutCount = 0; // 추가 (대시보드에서 사용)
         
         
         // 분석 함수
@@ -4160,7 +4362,7 @@ ${badges.length > 0 ?
             // 로딩 상태 표시
             aiContentDiv.innerHTML = `
                 <div class="ai-loading">
-                    <span>🧠 성적을 분석하고 있습니다</span>
+                    <span>성적을 분석하고 있습니다</span>
                     <div class="loading-dots">
                         <div class="loading-dot"></div>
                         <div class="loading-dot"></div>
@@ -4206,7 +4408,7 @@ function performAIAnalysis(student) {
     gradeKeys.forEach(function(testName) {
         var gradeData = grades[testName];
         
-        // ⭐⭐⭐ 등급 계산 수정 ⭐⭐⭐
+        // 등급 계산 수정 
         var finalGrade = gradeData.grade;
         
         // grade가 null이면 계산
@@ -4396,7 +4598,7 @@ function performAIAnalysis(student) {
             recentTests.forEach(function(testName) {
                 var gradeData = student.grades[testName];
                 if (gradeData) {
-                    // ⭐ 등급이 null이면 계산 ⭐
+                    // 등급이 null이면 계산 
                     var finalGrade = gradeData.grade;
                     if (!finalGrade || finalGrade === null || finalGrade === 'null') {
                         var percentile = calculatePercentile(gradeData.score, gradeData.subjectType, testName);
@@ -4448,19 +4650,19 @@ function performAIAnalysis(student) {
                 
                 if (recent4Avg < 60) {
                     strategy = '기본기 보강 필요';
-                    strategyColor = '#ef4444'; // 빨간색
+                    strategyColor = '#D4271C'; // 빨간색
                     possibleGain = Math.min(4, potential * 0.2); // 20% 성취도 향상 = 약 4점
                 } else if (recent4Avg < 80) {
                     strategy = '안정화 필요';
-                    strategyColor = '#f59e0b'; // 주황색
+                    strategyColor = '#141414'; // 주황색
                     possibleGain = Math.min(3, potential * 0.15);
                 } else if (recent4Avg < 95) {
                     strategy = '실수 방지 집중';
-                    strategyColor = '#10b981'; // 녹색
+                    strategyColor = '#141414'; // 녹색
                     possibleGain = Math.min(2, potential * 0.1);
                 } else {
                     strategy = '현재 수준 유지';
-                    strategyColor = '#6366f1'; // 보라색
+                    strategyColor = '#141414'; // 보라색
                     possibleGain = 1;
                 }
                 
@@ -4529,7 +4731,7 @@ function analyzeWeaknesses(subjectRatios, subjectAverages) {
     var weaknesses = [];
     var studentAvg = Object.values(subjectAverages).reduce((a, b) => a + b, 0) / Object.values(subjectAverages).length;
     
-    // 🆕 과목별 최근 4회 평균 계산
+    // 과목별 최근 4회 평균 계산
     var recentAverages = {};
     Object.keys(subjectRatios).forEach(function(subject) {
         var ratios = subjectRatios[subject];
@@ -4539,7 +4741,7 @@ function analyzeWeaknesses(subjectRatios, subjectAverages) {
         }
     });
     
-    // 🆕 학생의 최근 4회 과목별 평균들의 평균 계산
+    // 학생의 최근 4회 과목별 평균들의 평균 계산
     var studentRecentAvg = Object.values(recentAverages).reduce((a, b) => a + b, 0) / Object.values(recentAverages).length;
     
     Object.keys(subjectRatios).forEach(function(subject) {
@@ -4549,28 +4751,28 @@ function analyzeWeaknesses(subjectRatios, subjectAverages) {
         var recentRatios = ratios.slice(-4);
         var recentAvg = recentAverages[subject];
         
-        // 🔧 새로운 개선 기준
+        // 새로운 개선 기준
         var criteria = {
             // 1. 절대적 기준 (완화)
             absoluteLow: recentAvg < 70,                          // 기본 70% 미만
             
-            // 2. 🆕 상대적 기준 (개인 내 비교) - 핵심!
+            // 2. 상대적 기준 (개인 내 비교) - 핵심!
             relativeToSelf: recentAvg < studentRecentAvg - 10,    // 개인 평균보다 10% 이상 낮음
             relativeToSelfStrict: recentAvg < studentRecentAvg * 0.85,  // 개인 평균의 85% 미만
             
-            // 3. 🆕 다른 과목과의 격차
+            // 3. 다른 과목과의 격차
             bigGap: checkSubjectGap(recentAvg, recentAverages),   // 다른 과목들과 큰 격차
             
             // 4. 하락 추세 (기존 유지, 완화)
             declining: calculateSimpleTrend(ratios) < -8,         // 8% 이상 하락 추세
             
-            // 5. 🆕 일관성 부족 (안정성 대신)
+            // 5. 일관성 부족 (안정성 대신)
             inconsistent: Math.max(...recentRatios) - Math.min(...recentRatios) > 25  // 편차 25% 이상
         };
         
         var criteriaCount = Object.values(criteria).filter(Boolean).length;
         
-        // 🔧 개선 필요 판정: 1개 이상 조건 충족
+        // 개선 필요 판정: 1개 이상 조건 충족
         if (criteriaCount >= 1) {
             var description = generateWeaknessDescription(criteria, recentAvg, studentRecentAvg);
             
@@ -4579,14 +4781,14 @@ function analyzeWeaknesses(subjectRatios, subjectAverages) {
                 average: Math.round(recentAvg * 10) / 10,
                 criteriaCount: criteriaCount,
                 description: description,
-                // 🔧 우선순위 재조정
+                // 우선순위 재조정
                 urgency: criteria.relativeToSelf || criteria.bigGap ? 'high' : 
                         criteria.absoluteLow || criteriaCount >= 3 ? 'medium' : 'low'
             });
         }
     });
     
-    // 🔧 정렬: 상대적 약점 → 절대적 약점 → 기준 충족 개수 순
+    // 정렬: 상대적 약점 → 절대적 약점 → 기준 충족 개수 순
     weaknesses.sort((a, b) => {
         // 상대적 약점(개인 내 비교) 우선
         var aRelative = a.description.includes('개인 평균보다') || a.description.includes('다른 과목 대비');
@@ -4602,7 +4804,7 @@ function analyzeWeaknesses(subjectRatios, subjectAverages) {
     return weaknesses;
 }
 
-// 🆕 다른 과목과의 격차 체크 함수
+// 다른 과목과의 격차 체크 함수
 function checkSubjectGap(subjectAvg, allAverages) {
     var otherAverages = Object.values(allAverages).filter(avg => avg !== subjectAvg);
     if (otherAverages.length === 0) return false;
@@ -4613,7 +4815,7 @@ function checkSubjectGap(subjectAvg, allAverages) {
     return subjectAvg < otherAvg - 15;
 }
 
-// 🆕 약점 설명 생성 함수
+// 약점 설명 생성 함수
 function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
     var reasons = [];
     
@@ -4731,7 +4933,7 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
             var html = `
                 <div class="analysis-grid">
                     <div class="analysis-card">
-                        <h4>📊 현재 성적 현황 (고1)</h4>
+                        <h4>현재 성적 현황 (고1)</h4>
                         <p><strong>응시 현황:</strong> ${summary.testCount}/${summary.totalTests}회 모의고사</p>
                         <p><strong>최고 성적:</strong> ${summary.bestGrade}등급 ${summary.bestScore}점 (${summary.bestTest}${summary.bestTestSource ? ' ' + summary.bestTestSource : ''})</p>
                         <p><strong>평균 등급:</strong> ${summary.avgGrade}등급</p>
@@ -4740,13 +4942,13 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                     </div>
                     
                     <div class="analysis-card">
-                        <h4>🎯 강점 과목 분석</h4>
+                        <h4>강점 과목 분석</h4>
                         ${analysis.strengths.length > 0 ? 
                             analysis.strengths.map((s, i) => `
                                 <div style="margin: 8px 0;">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <span>${i + 1}. ${s.subject}</span>
-                                        <span style="font-weight: bold; color: #10b981;">${s.average}%</span>
+                                        <span style="font-weight: bold; color: #141414;">${s.average}%</span>
                                     </div>
                                     <div class="progress-bar-container">
                                         <div class="progress-bar-fill grade-excellent" style="width: ${s.average}%"></div>
@@ -4760,13 +4962,13 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                 
                 <div class="analysis-grid">
                     <div class="analysis-card">
-                        <h4>⚠️ 개선 필요 과목</h4>
+                        <h4>개선 필요 과목</h4>
                         ${analysis.weaknesses.length > 0 ? 
                             analysis.weaknesses.map((w, i) => `
                                 <div style="margin: 8px 0;">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <span>${i + 1}. ${w.subject}</span>
-                                        <span style="font-weight: bold; color: #f87171; font-size: 0.9em;">${w.average}%</span>
+                                        <span style="font-weight: bold; color: #D4271C; font-size: 0.9em;">${w.average}%</span>
                                     </div>
                                     <div style="font-size: 0.8em; color: rgba(255,255,255,0.8); margin-top: 4px;">
                                         ${w.description}
@@ -4781,14 +4983,14 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                     </div>
                     
                     <div class="analysis-card">
-                        <h4>📈 성적 추이 분석</h4>
+                        <h4>성적 추이 분석</h4>
                         ${analysis.trends.length > 0 ? 
                             analysis.trends.map(t => `
                                 <div style="margin: 8px 0; display: flex; align-items: center; gap: 8px;">
-                                    <span class="trend-${t.type}">${t.type === 'up' ? '📈' : '📉'}</span>
+                                    <span class="trend-${t.type}">${t.type === 'up' ? '' : ''}</span>
                                     <span style="flex: 1;">${t.subject}</span>
                                     <div style="display: flex; flex-direction: column; align-items: end;">
-                                        <span style="font-weight: bold; color: ${t.type === 'up' ? '#10b981' : '#f87171'};">
+                                        <span style="font-weight: bold; color: ${t.type === 'up' ? '#141414' : '#D4271C'};">
                                             ${t.intensity}
                                         </span>
                                         <span style="font-size: 0.75em; opacity: 0.8;">
@@ -4812,10 +5014,10 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                 
                 html += `
                     <div class="grade-strategy">
-                        <h4>🎯 구체적 등급 상승 전략</h4>
+                        <h4>구체적 등급 상승 전략</h4>
                         
                         <div style="margin-bottom: 20px;">
-                            <h5 style="margin-bottom: 10px; color: rgba(255,255,255,0.9);">📊 최근 4회 시험 현황</h5>
+                            <h5 style="margin-bottom: 10px; color: rgba(255,255,255,0.9);">최근 4회 시험 현황</h5>
                             <div class="recent-tests-grid">
                                 ${strategy.recentTests.map(test => `
                                     <div class="recent-test-item">
@@ -4836,20 +5038,20 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                                     <div class="target-grade">${strategy.targetGrade}등급 달성 전략</div>
                                     <div style="font-size: 1.0em; opacity: 0.9; margin-top: 5px;">
                                         목표 점수: <strong>${strategy.targetScore}점 이상</strong> 
-                                        <span style="font-size: 1.2em; font-weight: bold; color: #10b981; padding: 2px 8px; border-radius: 12px; margin-left: 8px;">
+                                        <span style="font-size: 1.2em; font-weight: bold; color: #141414; padding: 2px 8px; border-radius: 0; margin-left: 8px;">
                                             현재 평균 대비 ${strategy.neededPoints > 0 ? '+' : ''}${strategy.neededPoints}점
                                         </span>
                                     </div>
                                 </div>
                                 <div class="target-possibility ${possibilityClass}">
-                                    ${strategy.possibility === 'high' ? '💚' : strategy.possibility === 'medium' ? '💛' : '🔶'} 달성 가능성: ${possibilityText}
+                                    ${strategy.possibility === 'high' ? '' : strategy.possibility === 'medium' ? '' : ''} 달성 가능성: ${possibilityText}
                                 </div>
                             </div>
                         </div>
                         
                         ${strategy.subjectStrategies.length > 0 ? `
                             <div>
-                                <h5 style="margin: 15px 0 10px 0; color: rgba(255,255,255,0.9);">📈 과목별 점수 확보 전략</h5>
+                                <h5 style="margin: 15px 0 10px 0; color: rgba(255,255,255,0.9);">과목별 점수 확보 전략</h5>
                                 <div class="subject-strategy-list">
                                     ${strategy.subjectStrategies.map((subj, i) => `
                                         <div class="subject-strategy-item">
@@ -4857,7 +5059,7 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                                                 <div class="subject-name">${i + 1}. ${subj.subject}</div>
                                                 <div class="subject-detail">
                                                     성취도 ${subj.currentAvg}% 
-                                                    <span style="color: ${subj.strategyColor}; font-weight: bold; padding: 2px 6px; border-radius: 8px; margin-left: 5px;">
+                                                    <span style="color: ${subj.strategyColor}; font-weight: bold; padding: 2px 6px; border-radius: 0; margin-left: 5px;">
                                                         ${subj.strategy}
                                                     </span>
                                                 </div>
@@ -4871,8 +5073,8 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                                 
                                 <div class="total-strategy">
                                     <div class="total-points">
-                                        <span>💡 총 확보 가능 점수: +${strategy.totalPossibleGain}점</span>
-                                        <span style="color: ${strategy.totalPossibleGain >= strategy.neededPoints ? '#10b981' : '#f59e0b'};">
+                                        <span>총 확보 가능 점수: +${strategy.totalPossibleGain}점</span>
+                                        <span style="color: ${strategy.totalPossibleGain >= strategy.neededPoints ? '#141414' : '#141414'};">
                                             ${strategy.totalPossibleGain >= strategy.neededPoints ? 
                                                 '목표 달성을 위한 ' + strategy.neededPoints + '점 확보 충분히 가능!' : 
                                                 '목표 달성을 위해 추가 노력 필요'}
@@ -4888,7 +5090,7 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
             if (analysis.recommendations.length > 0) {
                 html += `
                     <div class="ai-recommendations">
-                        <h4>💡 정동민국어논술학원 맞춤 학습 전략</h4>
+                        <h4>정동민국어논술학원 맞춤 학습 전략</h4>
                         ${analysis.recommendations.map(r => `
                             <div class="recommendation-item">
                                 <div class="recommendation-priority">우선순위: ${r.priority}</div>
@@ -4926,12 +5128,12 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
                 document.getElementById('adminAuthSection').style.display = 'none';
                 document.getElementById('githubSetup').style.display = 'block';
                 
-                showStatus('✅ 관리자 인증이 완료되었습니다!', 'success');
+                showStatus('관리자 인증이 완료되었습니다!', 'success');
                 
                 // 기존 설정이 있다면 로드
                 loadExistingConfig();
             } else {
-                showStatus('❌ 비밀번호가 올바르지 않습니다.', 'error');
+                showStatus('비밀번호가 올바르지 않습니다.', 'error');
                 document.getElementById('adminPassword').value = '';
             }
         }
@@ -4948,7 +5150,7 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
             document.getElementById('uploadSection').style.display = 'none';
             
             document.getElementById('adminPassword').value = '';
-            showStatus('🔄 관리자 접근이 초기화되었습니다.', 'warning');
+            showStatus('관리자 접근이 초기화되었습니다.', 'warning');
         }
         
         // 기존 설정 로드
@@ -5023,7 +5225,7 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
         // GitHub 설정 저장
         function saveGitHubConfig() {
             if (!isAdminAuthenticated) {
-                showStatus('❌ 관리자 인증이 필요합니다.', 'error');
+                showStatus('관리자 인증이 필요합니다.', 'error');
                 return;
             }
             
@@ -5058,7 +5260,7 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
         // GitHub 연결 테스트
         function testGitHubConnection() {
             if (!isAdminAuthenticated) {
-                showStatus('❌ 관리자 인증이 필요합니다.', 'error');
+                showStatus('관리자 인증이 필요합니다.', 'error');
                 return;
             }
             
@@ -5077,15 +5279,15 @@ function generateWeaknessDescription(criteria, recentAvg, studentRecentAvg) {
             fetch(testUrl)
                 .then(function(response) {
                     if (response.ok) {
-                        showStatus('✅ 저장소 연결 성공! 설정을 저장해주세요.', 'success');
+                        showStatus('저장소 연결 성공! 설정을 저장해주세요.', 'success');
                     } else if (response.status === 404) {
-                        showStatus('❌ 저장소를 찾을 수 없습니다. 사용자명과 저장소 이름을 확인해주세요.', 'error');
+                        showStatus('저장소를 찾을 수 없습니다. 사용자명과 저장소 이름을 확인해주세요.', 'error');
                     } else {
-                        showStatus('❌ 연결 실패. 저장소가 Public인지 확인해주세요.', 'error');
+                        showStatus('연결 실패. 저장소가 Public인지 확인해주세요.', 'error');
                     }
                 })
                 .catch(function(error) {
-                    showStatus('❌ 네트워크 오류가 발생했습니다.', 'error');
+                    showStatus('네트워크 오류가 발생했습니다.', 'error');
                 });
         }
         
@@ -5145,7 +5347,7 @@ renderItemStats();
                     isDataLoaded = studentCount > 0;
                     
                     if (isDataLoaded) {
-                        updateDataStatus('✅ 성적 데이터가 준비되었습니다!', true, data.lastUpdated);
+                        updateDataStatus('성적 데이터가 준비되었습니다!', true, data.lastUpdated);
                         console.log('데이터 로드 성공!');
                         loadCommentsFromGitHub();
                     } else {
@@ -5253,7 +5455,7 @@ renderItemStats();
 
         function processFileAndUpload() {
             if (!isAdminAuthenticated) {
-                showStatus('❌ 관리자 인증이 필요합니다.', 'error');
+                showStatus('관리자 인증이 필요합니다.', 'error');
                 return;
             }
             
@@ -5298,7 +5500,7 @@ renderItemStats();
                             updateProgress(100, '완료!');
                             setTimeout(function() {
                                 showProgress(false);
-                                showStatus('✅ 고1 데이터가 성공적으로 GitHub에 업로드되었습니다!', 'success');
+                                showStatus('고1 데이터가 성공적으로 GitHub에 업로드되었습니다!', 'success');
                                 
                                 setTimeout(function() {
                                     loadDataFromGitHub();
@@ -5362,9 +5564,9 @@ var testName = String(row[0]).trim();      // A열: 시험명
     }
     
     window.gradeCuts = gradeCuts;
-gradeCutCount = Object.keys(gradeCuts).length;  // ⭐ 이 줄 추가
+gradeCutCount = Object.keys(gradeCuts).length;  // 이 줄 추가
 console.log('최종 등급컷 데이터:', gradeCuts);
-console.log('등급컷 시험 수:', gradeCutCount);  // ⭐ 확인용 로그 추가
+console.log('등급컷 시험 수:', gradeCutCount);  // 확인용 로그 추가
 return gradeCuts;
 }
         
@@ -5506,7 +5708,7 @@ function calculateGradeFromCut(score, testName, subjectType) {
             
             console.log('발견된 모클 시트들 (시트 순서):', testSheetNames);
             
-           // ⭐⭐⭐ 5-1. 등급컷 추출 (만점 추출 전에!) ⭐⭐⭐
+           // 5-1. 등급컷 추출 (만점 추출 전에!) 
 console.log('=== 등급컷 추출 시작 ===');
 extractGradeCuts(workbook);
 
@@ -5533,7 +5735,7 @@ for (var s = 0; s < testSheetNames.length; s++) {
     console.log(sheetName + ' 헤더:', headers);
     console.log(sheetName + ' 첫 번째 데이터 행:', jsonData[1]);
 
-    // ⭐ source 변수 선언 추가! ⭐
+    // source 변수 선언 추가! 
     var source = '';
     if (window.testSources && window.testSources[sheetName]) {
         source = window.testSources[sheetName];
@@ -5601,8 +5803,8 @@ for (var s = 0; s < testSheetNames.length; s++) {
             ratios: ratios,
             source: source
         };
-    }  // ⭐⭐⭐ 여기 추가! (for i 루프 닫기) ⭐⭐⭐
-}  // ⭐⭐⭐ 여기 추가! (for s 루프 닫기) ⭐⭐⭐
+    }  // 여기 추가! (for i 루프 닫기) 
+}  // 여기 추가! (for s 루프 닫기) 
 
 // 6-1. 문항표(문항_ 시트)와 학생 응답(응답_ 시트) — OMR 성적처리 프로그램이 만든 시트
 window.itemMeta = {};
@@ -5658,7 +5860,7 @@ function normHeader(h) {
 }
 
 function extractMaxScores(workbook, testSheetNames) {
-    console.log('🔥 만점 추출 시작');
+    console.log('만점 추출 시작');
     var result = {};
     
     testSheetNames.forEach(function(sheetName) {
@@ -5670,7 +5872,7 @@ function extractMaxScores(workbook, testSheetNames) {
         
         var headers = data[0];
         
-        // ⭐ 총점 최고 학생 찾기 (고1: 선택과목 없음) ⭐
+        // 총점 최고 학생 찾기 (고1: 선택과목 없음) 
         var 최고학생 = null;
         var 최고점 = 0;
         
@@ -5685,11 +5887,11 @@ function extractMaxScores(workbook, testSheetNames) {
         }
         
         if (!최고학생) {
-            console.warn('⚠️ 만점 학생 없음:', sheetName);
+            console.warn('만점 학생 없음:', sheetName);
             return;
         }
         
-        console.log('✅ 최종 선정:', sheetName, 최고학생[0], 최고학생[1], 최고점 + '점');
+        console.log('최종 선정:', sheetName, 최고학생[0], 최고학생[1], 최고점 + '점');
         
         var maxScores = {};
         for (var col = 4; col < headers.length; col++) {   // E열부터 영역별 점수
@@ -5700,7 +5902,7 @@ function extractMaxScores(workbook, testSheetNames) {
             }
         }
         
-        console.log('✅ ' + sheetName + ' 만점:', maxScores);
+        console.log('' + sheetName + ' 만점:', maxScores);
         result[sheetName] = maxScores;
     });
     
@@ -5762,14 +5964,14 @@ function extractMaxScores(workbook, testSheetNames) {
             if (isSuccess && lastUpdated) {
                 var updateDate = new Date(lastUpdated);
                 var formattedDate = updateDate.toLocaleDateString('ko-KR') + ' ' + updateDate.toLocaleTimeString('ko-KR', {hour: '2-digit', minute: '2-digit'});
-                statusMessage.innerHTML = message + '<br><small style="color: #666;">마지막 업데이트: ' + formattedDate + '</small>';
-                noDataDiv.style.background = '#d4edda';
-                noDataDiv.style.color = '#155724';
-                noDataDiv.style.border = '1px solid #c3e6cb';
+                statusMessage.innerHTML = message + '<br><small style="color: #8C8C8C;">마지막 업데이트: ' + formattedDate + '</small>';
+                noDataDiv.style.background = '#FFFFFF';
+                noDataDiv.style.color = '#141414';
+                noDataDiv.style.border = '1px solid #D9D9D9';
             } else {
                 statusMessage.innerHTML = message;
-                noDataDiv.style.background = '#f8f9fa';
-                noDataDiv.style.color = '#666';
+                noDataDiv.style.background = '#FFFFFF';
+                noDataDiv.style.color = '#8C8C8C';
                 noDataDiv.style.border = 'none';
             }
         }
@@ -5821,7 +6023,7 @@ function extractMaxScores(workbook, testSheetNames) {
             }
             
             displayStudentInfo(student);
-            displaySummaryTable(student);  // ✅ AI 분석 전으로 이동
+            displaySummaryTable(student);  // AI 분석 전으로 이동
             generateAIAnalysis(student); // AI 분석 실행
             resultsDiv.style.display = 'block';
             
@@ -5844,17 +6046,19 @@ function extractMaxScores(workbook, testSheetNames) {
             
             studentInfoDiv.innerHTML = 
                 '<div class="student-info">' +
-                '<h2>👨‍🎓 ' + student.name + ' (고1)</h2>' +
+                '<div class="student-line"><h2>' + escHtml(student.name) + '<small>출결번호 ' + escHtml(student.attendanceNumber) + ' · 응시 ' + attendedTests + '/' + totalTests + '회</small></h2></div>' +
+                buildSpread(student) +
+                '<div style="display: none;">' +
                 '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px;">' +
-                '<div style="display: flex; justify-content: space-between;"><span style="font-weight: 600; color: #555;">출결번호:</span><span style="color: #333; font-weight: bold;">' + student.attendanceNumber + '</span></div>' +
-                '<div style="display: flex; justify-content: space-between;"><span style="font-weight: 600; color: #555;">응시 현황:</span><span style="color: #333; font-weight: bold;">' + attendedTests + '/' + totalTests + '회</span></div>' +
-                '</div></div>' +
-                displayTeacherComment(student.attendanceNumber) +  /* ⭐ 이 줄 추가 ⭐ */
+                '<div style="display: flex; justify-content: space-between;"><span style="font-weight: 600; color: #8C8C8C;">출결번호:</span><span style="color: #141414; font-weight: bold;">' + student.attendanceNumber + '</span></div>' +
+                '<div style="display: flex; justify-content: space-between;"><span style="font-weight: 600; color: #8C8C8C;">응시 현황:</span><span style="color: #141414; font-weight: bold;">' + attendedTests + '/' + totalTests + '회</span></div>' +
+                '</div></div></div>' +
+                displayTeacherComment(student.attendanceNumber) +  /* 이 줄 추가 */
                displayStudyFortune(student.name) +
                 displayDashboard(student) +
                 displayTypeAnalysis(student);
             
-                   // 🆕 학습 계획서 섹션 표시
+                   // 학습 계획서 섹션 표시
 document.getElementById('studyPlanSection').style.display = 'block';
         }
 
@@ -5865,7 +6069,7 @@ function displaySummaryTable(student) {
     var totalTests = allTests.length;
     
     var tableHtml = '<div class="summary-table">';
-tableHtml += '<h3 onclick="toggleSummaryTable()" style="cursor:pointer; user-select:none;">📊 전체 성적 현황 (고1 - ' + totalTests + '개 시험) <span id="summaryToggleIcon">▶ 클릭하여 펼치기</span></h3>';
+tableHtml += '<h3 onclick="toggleSummaryTable()" style="cursor:pointer; user-select:none;">전체 성적 현황 (고1 - ' + totalTests + '개 시험) <span id="summaryToggleIcon">▶ 클릭하여 펼치기</span></h3>';
 tableHtml += '<div id="summaryTableBody" style="display:none;">';
 tableHtml += '<table class="grade-table">';
 tableHtml += '<thead><tr>';
@@ -5901,7 +6105,7 @@ if (!testGrade) {
     
     tableHtml += '</tbody></table></div></div>';  // 기존 </div> 앞에 </div> 추가
     
-    // ========== 🆕 모의고사 성취도 비율 현황 (3·5·6·7·9·10월) ==========
+    // ========== 모의고사 성취도 비율 현황 (3·5·6·7·9·10월) ==========
     tableHtml += (function() {
         var MOCK_MONTHS = ['3월', '5월', '6월', '7월', '9월', '10월'];
         var mockTests = [];
@@ -5918,10 +6122,10 @@ if (!testGrade) {
         }
 
         var h = '<div class="summary-table" style="margin-top: 30px;">';
-        h += '<h3>🏫 모의고사 성취도 비율 현황 (3·5·6·7·9·10월)</h3>';
+        h += '<h3>모의고사 성취도 비율 현황 (3·5·6·7·9·10월)</h3>';
 
         if (mockTests.length === 0) {
-            h += '<div style="padding: 25px; text-align: center; color: #888;">아직 응시한 전국연합/평가원 모의고사 성적이 없습니다.</div></div>';
+            h += '<div style="padding: 25px; text-align: center; color: #8C8C8C;">아직 응시한 전국연합/평가원 모의고사 성적이 없습니다.</div></div>';
             return h;
         }
 
@@ -5933,7 +6137,7 @@ if (!testGrade) {
                      ['현대소설', 55], ['고전시가', 55], ['고전소설', 55],
                      ['언어화법', 50], ['매체작문', 50]];
         for (var hi = 0; hi < heads.length; hi++) {
-            var bg = hi < 3 ? '' : 'background: rgba(102, 126, 234, 0.05);';
+            var bg = hi < 3 ? '' : 'background: transparent;';
             h += '<th style="min-width: ' + heads[hi][1] + 'px; font-size: 0.8em; ' + bg + '">' + heads[hi][0] + '</th>';
         }
         h += '</tr></thead><tbody>';
@@ -5985,8 +6189,8 @@ if (!testGrade) {
                     }
                     if (hit) break;
                 }
-                var c = ratio >= 90 ? '#e74c3c' : ratio >= 80 ? '#f39c12' : ratio >= 70 ? '#f1c40f' :
-                        ratio >= 60 ? '#2ecc71' : ratio >= 50 ? '#3498db' : '#95a5a6';
+                var c = ratio >= 90 ? '#D4271C' : ratio >= 80 ? '#141414' : ratio >= 70 ? '#141414' :
+                        ratio >= 60 ? '#141414' : ratio >= 50 ? '#141414' : '#8C8C8C';
                 h += '<td style="color: ' + c + '; font-weight: bold; text-align: center; font-size: 0.85em;">' + (ratio > 0 ? ratio + '%' : '-') + '</td>';
             }
             h += '</tr>';
@@ -5997,15 +6201,15 @@ if (!testGrade) {
 
     // ========== 두 번째 테이블: 과목별 성취도 (그룹화 적용) ==========
     tableHtml += '<div class="summary-table" style="margin-top: 30px;">';
-    tableHtml += '<h3>📈 과목별 성취도 비율 현황</h3>';
+    tableHtml += '<h3>과목별 성취도 비율 현황</h3>';
     
     // 그래프 영역 추가
-    tableHtml += '<div id="subjectGraphContainer" style="display: none; background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border-radius: 15px; padding: 25px; margin: 20px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">';
+    tableHtml += '<div id="subjectGraphContainer" style="display: none; background: transparent; border-radius: 0; padding: 25px; margin: 20px 0; box-shadow: none;">';
     tableHtml += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">';
-    tableHtml += '<h4 id="currentGraphTitle" style="color: #667eea; font-size: 1.2em; margin: 0;">📊 과목별 성취도 추이</h4>';
-    tableHtml += '<button onclick="closeInlineGraph()" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.9em; font-weight: 600;">✖️ 닫기</button>';
+    tableHtml += '<h4 id="currentGraphTitle" style="color: #141414; font-size: 1.2em; margin: 0;">과목별 성취도 추이</h4>';
+    tableHtml += '<button onclick="closeInlineGraph()" style="background: transparent; color: #141414; border: none; padding: 8px 16px; border-radius: 0; cursor: pointer; font-size: 0.9em; font-weight: 600;">닫기</button>';
     tableHtml += '</div>';
-    tableHtml += '<div style="height: 300px; background: white; border-radius: 10px; padding: 15px;">';
+    tableHtml += '<div style="height: 300px; background: white; border-radius: 0; padding: 15px;">';
     tableHtml += '<canvas id="inlineGraphCanvas"></canvas>';
     tableHtml += '</div>';
     tableHtml += '</div>';
@@ -6014,14 +6218,14 @@ if (!testGrade) {
     tableHtml += '<table class="grade-table" style="min-width: 900px; font-size: 0.75em;">';
     tableHtml += '<thead><tr>';
     tableHtml += '<th style="min-width: 60px; font-size: 0.8em;">시험</th>';
-    tableHtml += '<th style="min-width: 40px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.1);" onclick="openScoreGraphClick(\'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">점수 📊</th>';
-    tableHtml += '<th style="min-width: 40px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(239, 68, 68, 0.1);" onclick="openGradeGraphClick(\'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">등급 📊</th>';
+    tableHtml += '<th style="min-width: 40px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: transparent;" onclick="openScoreGraphClick(\'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">점수 </th>';
+    tableHtml += '<th style="min-width: 40px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: transparent;" onclick="openGradeGraphClick(\'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">등급 </th>';
     SUBJECT_ORDER.forEach(function(subj) {
-        tableHtml += '<th style="min-width: 60px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: rgba(102, 126, 234, 0.05);" onclick="openSubjectGraphClick(\'' + subj + '\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">' + subj + ' 📊</th>';
+        tableHtml += '<th style="min-width: 60px; font-size: 0.8em; cursor: pointer; transition: all 0.3s; background: transparent;" onclick="openSubjectGraphClick(\'' + subj + '\', \'' + student.attendanceNumber + '\')" title="클릭하면 그래프 보기">' + subj + ' </th>';
     });
     tableHtml += '</tr></thead><tbody>';
     
-// ⭐ 데이터 그룹화 ⭐
+// 데이터 그룹화 
 var recentCount = 10;
 
 // 학생이 실제로 응시한 시험만 필터링
@@ -6090,7 +6294,7 @@ for (var i = 0; i < recentTests.length; i++) {
     }
 }
     
-    // ⭐ 그룹별 평균 데이터 표시 ⭐
+    // 그룹별 평균 데이터 표시 
     for (var g = 0; g < groupedTests.length; g++) {
         var group = groupedTests[g];
         
@@ -6160,8 +6364,8 @@ group.tests.forEach(function(test) {
             
             var avgRatio = ratioCount > 0 ? Math.round(totalRatio / ratioCount) : 0;
             
-            var ratioColor = avgRatio >= 90 ? '#e74c3c' : avgRatio >= 80 ? '#f39c12' : avgRatio >= 70 ? '#f1c40f' : 
-                            avgRatio >= 60 ? '#2ecc71' : avgRatio >= 50 ? '#3498db' : '#95a5a6';
+            var ratioColor = avgRatio >= 90 ? '#D4271C' : avgRatio >= 80 ? '#141414' : avgRatio >= 70 ? '#141414' : 
+                            avgRatio >= 60 ? '#141414' : avgRatio >= 50 ? '#141414' : '#8C8C8C';
             var ratioText = avgRatio > 0 ? avgRatio + '%' : '-';
             
             tableHtml += '<td style="color: ' + ratioColor + '; font-weight: bold; text-align: center; font-size: 0.85em;">' + ratioText + '</td>';
@@ -6201,7 +6405,7 @@ group.tests.forEach(function(test) {
                         var subject = detailKeys[j];
                         var score = gradeData.details[subject];
                         var ratio = gradeData.ratios[subject] || 0;
-                        var ratioColor = ratio >= 80 ? '#e74c3c' : ratio >= 60 ? '#f39c12' : ratio >= 40 ? '#f1c40f' : '#95a5a6';
+                        var ratioColor = ratio >= 80 ? '#D4271C' : ratio >= 60 ? '#141414' : ratio >= 40 ? '#141414' : '#8C8C8C';
                         
                         detailsHtml += 
                         '<div class="grade-item" style="padding: 4px 8px; font-size: 0.8em;">' +
@@ -6220,10 +6424,10 @@ group.tests.forEach(function(test) {
             
             var sourceInfo = '';
             if (gradeData.source && gradeData.source.trim() !== '') {
-                sourceInfo = '<div class="grade-summary-item"><div class="grade-summary-value" style="font-size: 0.8em; color: #666;">' + gradeData.source + '</div><div class="grade-summary-label" style="font-size: 0.75em;">출처</div></div>';
+                sourceInfo = '<div class="grade-summary-item"><div class="grade-summary-value" style="font-size: 0.8em; color: #8C8C8C;">' + gradeData.source + '</div><div class="grade-summary-label" style="font-size: 0.75em;">출처</div></div>';
             }
                 
-               // ⭐ 등급 계산 추가 ⭐
+               // 등급 계산 추가 
                if (!displayGrade || displayGrade === null || displayGrade === 'null' || displayGrade === 0) {
    // 1순위: 등급컷
     if (window.gradeCuts && window.gradeCuts[testName]) {
@@ -6237,12 +6441,12 @@ group.tests.forEach(function(test) {
 }
                 
               gradeCard.innerHTML = 
-                '<h3 style="font-size: 1.1em; margin-bottom: 12px;">📝 ' + testName + '</h3>' +
+                '<h3 style="font-size: 1.1em; margin-bottom: 12px;">' + testName + '</h3>' +
                 '<div class="grade-summary" style="grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 12px; padding: 10px;">' +
                 '<div class="grade-summary-item"><div class="grade-summary-value grade-' + displayGrade + '" style="font-size: 1.1em;">' + displayGrade + '등급</div><div class="grade-summary-label" style="font-size: 0.75em;">내 등급</div></div>' +
                 '<div class="grade-summary-item"><div class="grade-summary-value" style="font-size: 1.1em;">' + gradeData.score + '점</div><div class="grade-summary-label" style="font-size: 0.75em;">내 점수</div></div>' +
                 cutInfo + sourceInfo + '</div>';
-                /* ⭐ 위에서 과목별 성취도 부분 전체 삭제 ⭐ */
+                /* 위에서 과목별 성취도 부분 전체 삭제 */
               
                 gradeCardsDiv.appendChild(gradeCard);
             }
@@ -6388,7 +6592,7 @@ var overlay = document.getElementById('subjectGraphOverlay');
             
         };
 
- /* ⭐ 여기부터 추가 ⭐ */
+ /* 여기부터 추가 */
         
         // 선생님 코멘트 관련 함수들
         var studentComments = {}; // 코멘트 저장 객체
@@ -6475,9 +6679,9 @@ var overlay = document.getElementById('subjectGraphOverlay');
             var isEditing = false;
             
             var html = '<div class="teacher-comment-section" id="commentSection">';
-            html += '<h3>💬 선생님 코멘트</h3>';
+            html += '<h3>선생님 코멘트</h3>';
             
-          html += '<div id="commentDisplay" class="comment-display" style="white-space: pre-wrap;">';  /* ⭐ 스타일 추가 ⭐ */
+          html += '<div id="commentDisplay" class="comment-display" style="white-space: pre-wrap;">';  /* 스타일 추가 */
 if (comment) {
     html += comment;
 } else {
@@ -6488,13 +6692,13 @@ html += '</div>';
             html += '<div id="commentEditArea" style="display: none;">';
             html += '<textarea class="comment-edit-area" id="commentTextarea" rows="12">' + comment + '</textarea>';
             html += '<div class="comment-buttons">';
-            html += '<button class="comment-btn comment-btn-save" onclick="saveComment(\'' + attendanceNumber + '\')">💾 저장</button>';
-            html += '<button class="comment-btn comment-btn-cancel" onclick="cancelEditComment()">✖️ 취소</button>';
+            html += '<button class="comment-btn comment-btn-save" onclick="saveComment(\'' + attendanceNumber + '\')">저장</button>';
+            html += '<button class="comment-btn comment-btn-cancel" onclick="cancelEditComment()">취소</button>';
             html += '</div>';
             html += '</div>';
             
             html += '<div class="comment-buttons" id="commentEditButton">';
-            html += '<button class="comment-btn comment-btn-edit" onclick="editComment()">✏️ ' + (comment ? '수정하기' : '작성하기') + '</button>';
+            html += '<button class="comment-btn comment-btn-edit" onclick="editComment()">' + (comment ? '수정하기' : '작성하기') + '</button>';
             html += '</div>';
             
             html += '</div>';
@@ -6531,27 +6735,27 @@ html += '</div>';
             
             saveCommentsToGitHub()
                 .then(function() {
-                    alert('✅ 코멘트가 저장되었습니다!');
+                    alert('코멘트가 저장되었습니다!');
                     
                     // 화면 업데이트
                   var displayDiv = document.getElementById('commentDisplay');
 if (newComment) {
-    displayDiv.innerHTML = newComment.replace(/\n/g, '<br>');  /* ⭐ \n을 <br>로 변환 ⭐ */
+    displayDiv.innerHTML = newComment.replace(/\n/g, '<br>');  /* \n을 <br>로 변환 */
                     } else {
                         displayDiv.innerHTML = '<span class="comment-empty">아직 작성된 코멘트가 없습니다.</span>';
                     }
                     
                     var editButton = document.getElementById('commentEditButton').querySelector('.comment-btn-edit');
-                    editButton.textContent = '✏️ ' + (newComment ? '수정하기' : '작성하기');
+                    editButton.textContent = '' + (newComment ? '수정하기' : '작성하기');
                     
                     cancelEditComment();
                 })
                 .catch(function(error) {
-                    alert('❌ 저장 실패: ' + error.message);
+                    alert('저장 실패: ' + error.message);
                 })
                 .finally(function() {
                     saveBtn.disabled = false;
-                    saveBtn.textContent = '💾 저장';
+                    saveBtn.textContent = '저장';
                 });
         }
 
@@ -6560,7 +6764,7 @@ var currentSubjectChart = null;
 
 // 과목별 그래프 팝업 열기
 function openSubjectGraph(subjectName, studentData, event) {
-    console.log('📊 그래프 열기:', subjectName);
+    console.log('그래프 열기:', subjectName);
     
     // 과목명 매핑
     var subjectMapping = SUBJECT_ALIASES;
@@ -6603,7 +6807,7 @@ function openSubjectGraph(subjectName, studentData, event) {
     }
     
     // 제목 설정
-    document.getElementById('subjectGraphTitle').textContent = '📊 ' + subjectName + ' 성취도 추이';
+    document.getElementById('subjectGraphTitle').textContent = '' + subjectName + ' 성취도 추이';
     
     // 팝업 표시
     var overlay = document.getElementById('subjectGraphOverlay');
@@ -6633,14 +6837,14 @@ function openSubjectGraph(subjectName, studentData, event) {
                 datasets: [{
                     label: '성취도 (%)',
                     data: dataPoints,
-                    borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.15)',
+                    borderColor: '#141414',
+                    backgroundColor: 'transparent',
                     tension: 0.4,
                     fill: true,
                     pointRadius: 6,
                     pointHoverRadius: 8,
-                    pointBackgroundColor: '#667eea',
-                    pointBorderColor: '#fff',
+                    pointBackgroundColor: '#141414',
+                    pointBorderColor: '#FFFFFF',
                     pointBorderWidth: 3
                 }]
             },
@@ -6735,7 +6939,7 @@ function closeSubjectGraph(event) {
 
 // 점수 그래프 팝업 열기
 function openScoreGraph(studentData, event) {
-    console.log('📊 점수 그래프 열기');
+    console.log('점수 그래프 열기');
     
     var labels = [];
     var scoreData = [];
@@ -6756,7 +6960,7 @@ function openScoreGraph(studentData, event) {
     }
     
     // 제목 설정
-    document.getElementById('subjectGraphTitle').textContent = '📊 점수 추이';
+    document.getElementById('subjectGraphTitle').textContent = '점수 추이';
 
  // 팝업 표시
     document.getElementById('subjectGraphOverlay').classList.add('active');
@@ -6777,14 +6981,14 @@ function openScoreGraph(studentData, event) {
             datasets: [{
                 label: '점수',
                 data: scoreData,
-                borderColor: '#667eea',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                borderColor: '#141414',
+                backgroundColor: 'transparent',
                 tension: 0.4,
                 fill: true,
                 pointRadius: 6,
                 pointHoverRadius: 8,
-                pointBackgroundColor: '#667eea',
-                pointBorderColor: '#fff',
+                pointBackgroundColor: '#141414',
+                pointBorderColor: '#FFFFFF',
                 pointBorderWidth: 2
             }]
         },
@@ -6830,7 +7034,7 @@ function openScoreGraph(studentData, event) {
 
 // 등급 그래프 팝업 열기
 function openGradeGraph(studentData, event) {
-    console.log('📊 등급 그래프 열기');
+    console.log('등급 그래프 열기');
     
     var labels = [];
     var gradeData = [];
@@ -6861,7 +7065,7 @@ function openGradeGraph(studentData, event) {
     }
     
   // 제목 설정
-    document.getElementById('subjectGraphTitle').textContent = '📊 등급 추이';
+    document.getElementById('subjectGraphTitle').textContent = '등급 추이';
 
   // 팝업 표시
     document.getElementById('subjectGraphOverlay').classList.add('active');
@@ -6883,14 +7087,14 @@ function openGradeGraph(studentData, event) {
             datasets: [{
                 label: '등급',
                 data: gradeData,
-                borderColor: '#ef4444',
-                backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                borderColor: '#D4271C',
+                backgroundColor: 'transparent',
                 tension: 0.4,
                 fill: true,
                 pointRadius: 6,
                 pointHoverRadius: 8,
-                pointBackgroundColor: '#ef4444',
-                pointBorderColor: '#fff',
+                pointBackgroundColor: '#D4271C',
+                pointBorderColor: '#FFFFFF',
                 pointBorderWidth: 2
             }]
         },
@@ -7023,7 +7227,7 @@ function openSubjectGraphClick(subjectName, attendanceNumber) {
         return;
     }
     
-    showInlineGraph(subjectName + ' 성취도 추이', labels, dataPoints, '성취도 (%)', '#667eea', true);
+    showInlineGraph(subjectName + ' 성취도 추이', labels, dataPoints, '성취도 (%)', '#141414', true);
 }
 
 // 점수 인라인 그래프
@@ -7052,7 +7256,7 @@ function openScoreGraphClick(attendanceNumber) {
         return;
     }
     
-    showInlineGraph('점수 추이', labels, scoreData, '점수', '#667eea', false);
+    showInlineGraph('점수 추이', labels, scoreData, '점수', '#141414', false);
 }
 
 // 등급 인라인 그래프
@@ -7091,14 +7295,14 @@ function openGradeGraphClick(attendanceNumber) {
         return;
     }
     
-    showInlineGraph('등급 추이', labels, gradeData, '등급', '#ef4444', false, true);
+    showInlineGraph('등급 추이', labels, gradeData, '등급', '#D4271C', false, true);
 }
 
 // 통합 인라인 그래프 표시 함수
 function showInlineGraph(title, labels, data, yLabel, color, isPercentage, isGrade) {
     // 그래프 영역 표시
     document.getElementById('subjectGraphContainer').style.display = 'block';
-    document.getElementById('currentGraphTitle').textContent = '📊 ' + title;
+    document.getElementById('currentGraphTitle').textContent = '' + title;
     
     // 그래프 영역으로 스크롤
     document.getElementById('subjectGraphContainer').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -7141,7 +7345,7 @@ function showInlineGraph(title, labels, data, yLabel, color, isPercentage, isGra
         yAxisConfig.max = 100;
     }
     
-    // ⭐ 등급 그래프일 때는 데이터를 뒤집어서 표시 ⭐
+    // 등급 그래프일 때는 데이터를 뒤집어서 표시 
     var chartData = data;
     var fillConfig = true;
     
@@ -7174,7 +7378,7 @@ function showInlineGraph(title, labels, data, yLabel, color, isPercentage, isGra
                 pointRadius: 6,
                 pointHoverRadius: 8,
                 pointBackgroundColor: color,
-                pointBorderColor: '#fff',
+                pointBorderColor: '#FFFFFF',
                 pointBorderWidth: 3
             }]
         },
@@ -7326,16 +7530,20 @@ function createTypeTrendChart(student) {
     var canvas = document.getElementById('typeTrend_' + student.attendanceNumber);
     if (!canvas || typeof Chart === 'undefined') return;
     var tr = groupTrend(student);
-    var colors = {'독서': '#3366cc', '문학': '#dc3912', '화작': '#109618', '문법': '#ff9900'};
+    var groups = Object.keys(tr.series).filter(function(g) {
+        return tr.series[g].some(function(v) { return v !== null; });
+    });
+    var lastOf = function(g) { var v = tr.series[g].filter(function(x) { return x !== null; }); return v[v.length - 1]; };
+    var low = groups.slice().sort(function(a, b) { return lastOf(a) - lastOf(b); })[0];
+    var look = {'독서': ['#141414', []], '문학': ['#141414', [6, 4]], '화작': ['#8C8C8C', []], '문법': ['#8C8C8C', [6, 4]]};
     new Chart(canvas, {
         type: 'line',
         data: {
             labels: tr.tests,
-            datasets: Object.keys(tr.series).filter(function(g) {
-                return tr.series[g].some(function(v) { return v !== null; });
-            }).map(function(g) {
-                return {label: g, data: tr.series[g], borderColor: colors[g], backgroundColor: colors[g],
-                        spanGaps: true, tension: 0.2};
+            datasets: groups.map(function(g) {
+                var c = g === low ? '#D4271C' : look[g][0];
+                return {label: g + (g === low ? ' (가장 낮음)' : ''), data: tr.series[g], borderColor: c, backgroundColor: c,
+                        borderDash: g === low ? [] : look[g][1], borderWidth: g === low ? 2 : 1.5, spanGaps: true, tension: 0};
             })
         },
         options: {responsive: true, maintainAspectRatio: false,
@@ -7352,7 +7560,7 @@ function typeBadges(student) {
         if (s.total >= 5 && s.ok === s.total) {
             var text = s.type + ' 마스터';
             badgeDescriptions[text] = s.type + ' 유형 ' + s.total + '문항을 하나도 틀리지 않았습니다!';
-            out.push({icon: '🎯', text: text, type: 'subject-master', isNew: true});
+            out.push({icon: '', text: text, type: 'subject-master', isNew: true});
         }
     });
     var tests = (window.discoveredTestSheets || []).filter(function(t) {
@@ -7371,7 +7579,7 @@ function typeBadges(student) {
         if (overcome.length) {
             var names = overcome.map(function(k) { return now[k].type; }).join(', ');
             badgeDescriptions['약점 극복'] = '정답률 50%도 안 되던 ' + names + ' 유형을 ' + last + '에서 모두 맞혔습니다!';
-            out.push({icon: '💪', text: '약점 극복', type: 'total-growth', isNew: true});
+            out.push({icon: '', text: '약점 극복', type: 'total-growth', isNew: true});
         }
     }
     return out;
@@ -7389,7 +7597,7 @@ function displayTypeAnalysis(student) {
         .filter(function(s) { return s.total >= 2; })
         .sort(function(a, b) { return rate(a) - rate(b); }).slice(0, 3);
 
-    var html = '<div class="dashboard-card" style="margin: 25px 0; grid-column: 1 / -1;"><h3>🧩 문제 유형별 분석</h3>';
+    var html = '<div class="dashboard-card" style="margin: 25px 0; grid-column: 1 / -1;"><h3>문제 유형별 분석</h3>';
     if (weak.length) {
         html += '<p style="margin-bottom: 12px;"><strong>보완할 유형:</strong> ' +
             weak.map(function(s) { return escHtml(s.type) + ' ' + rate(s) + '%'; }).join(' · ') + '</p>';
@@ -7401,22 +7609,22 @@ function displayTypeAnalysis(student) {
     ['독서', '문학', '화작', '문법', '기타'].forEach(function(g) {
         var list = keys.filter(function(k) { return mine[k].group === g; });
         if (!list.length) return;
-        html += '<h4 style="margin: 14px 0 6px; color: #555;">' + g + '</h4>';
+        html += '<h4 style="margin: 14px 0 6px; color: #8C8C8C;">' + g + '</h4>';
         list.forEach(function(k) {
             var s = mine[k], r = rate(s);
             var avg = everyone[k] ? rate(everyone[k]) : null;
-            var color = r >= 80 ? '#2e9d5b' : r >= 50 ? '#f0a020' : '#e04848';
+            var color = r >= 80 ? '#141414' : r >= 50 ? '#141414' : '#D4271C';
             html += '<div style="display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 0.92em;">' +
                 '<span style="width: 140px; flex-shrink: 0;">' + escHtml(s.type) + '</span>' +
                 '<div role="img" aria-label="' + escHtml(s.type) + ' 정답률 ' + r + '%' + (avg !== null ? ', 전체 평균 ' + avg + '%' : '') + '" ' +
-                'style="flex: 1; background: #eee; border-radius: 6px; height: 14px; position: relative;">' +
-                '<div style="width: ' + r + '%; height: 100%; border-radius: 6px; background: ' + color + ';"></div>' +
-                (avg !== null ? '<div style="position: absolute; top: -3px; bottom: -3px; left: ' + avg + '%; width: 2px; background: #333;"></div>' : '') +
+                'style="flex: 1; background: #EFEFEF; border-radius: 0; height: 6px; position: relative;">' +
+                '<div style="width: ' + r + '%; height: 100%; border-radius: 0; background: ' + color + ';"></div>' +
+                (avg !== null ? '<div style="position: absolute; top: -3px; bottom: -3px; left: ' + avg + '%; width: 2px; background: #141414;"></div>' : '') +
                 '</div>' +
                 '<span style="width: 105px; text-align: right; flex-shrink: 0;">' + r + '% (' + s.ok + '/' + s.total + ')</span></div>';
         });
     });
-    html += '<p style="font-size: 0.8em; color: #666; margin-top: 6px;">막대 위 검은 선 = 전체 학생 평균</p>';
+    html += '<p style="font-size: 0.8em; color: #8C8C8C; margin-top: 6px;">막대 위 검은 선 = 전체 학생 평균</p>';
 
     var tests = (window.discoveredTestSheets || []).filter(function(t) {
         return student.grades[t] && student.grades[t].answers && meta[t];
@@ -7428,23 +7636,23 @@ function displayTypeAnalysis(student) {
         var must = wrong.filter(function(x) { return x.st.rate >= 70; }).length;
         html += '<details' + (idx === 0 ? ' open' : '') + ' style="margin-top: 12px;">' +
             '<summary style="cursor: pointer; font-weight: 600;">' + escHtml(t) + ' — 틀린 문항 ' + wrong.length + '개' +
-            (must ? ' <span style="color: #d4271c;">(놓치면 안 되는 문제 ' + must + '개)</span>' : '') + '</summary>';
+            (must ? ' <span style="color: #D4271C;">(놓치면 안 되는 문제 ' + must + '개)</span>' : '') + '</summary>';
         if (wrong.length) {
             html += '<table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.9em;">' +
-                '<thead><tr style="background: #f3f3f8;"><th style="padding: 4px;">번호</th><th>영역</th><th>유형</th><th>내 답</th><th>정답</th><th>전체 정답률</th><th>참고</th></tr></thead><tbody>' +
+                '<thead><tr style="background: #FFFFFF;"><th style="padding: 4px;">번호</th><th>영역</th><th>유형</th><th>내 답</th><th>정답</th><th>전체 정답률</th><th>참고</th></tr></thead><tbody>' +
                 wrong.map(function(x) {
                     var ans = x.it.ans.replace(/\s/g, '').split(',').map(function(v) { return CIRCLED[v] || v; }).join(' ');
                     var easy = x.st.rate >= 70;
                     var same = x.st.n ? Math.round((x.st.pick[x.m] || 0) * 100 / x.st.n) : 0;
                     var note = [];
-                    if (easy) note.push('<strong style="color: #d4271c;">놓치면 안 되는 문제</strong>');
+                    if (easy) note.push('<strong style="color: #D4271C;">놓치면 안 되는 문제</strong>');
                     if (CIRCLED[x.m] && x.st.n >= 3 && same >= 25) note.push('함정 선지 (' + same + '%가 같은 답)');
-                    return '<tr style="border-bottom: 1px solid #eee; text-align: center;' + (easy ? ' background: #fff4f3;' : '') + '"><td style="padding: 4px;">' + x.it.n + '</td><td>' +
+                    return '<tr style="border-bottom: 1px solid #EFEFEF; text-align: center;' + (easy ? ' background: #FFFFFF;' : '') + '"><td style="padding: 4px;">' + x.it.n + '</td><td>' +
                         escHtml(x.it.area) + '</td><td>' + escHtml(x.it.type) + '</td><td>' +
                         (CIRCLED[x.m] || '무응답') + '</td><td>' + ans + '</td><td>' + x.st.rate + '%</td><td style="text-align: left;">' +
                         note.join(' · ') + '</td></tr>';
                 }).join('') + '</tbody></table>' +
-                '<p style="font-size: 0.8em; color: #666; margin-top: 4px;">놓치면 안 되는 문제 = 전체 정답률 70% 이상 · 함정 선지 = 같은 오답을 고른 학생 25% 이상</p>';
+                '<p style="font-size: 0.8em; color: #8C8C8C; margin-top: 4px;">놓치면 안 되는 문제 = 전체 정답률 70% 이상 · 함정 선지 = 같은 오답을 고른 학생 25% 이상</p>';
         }
         html += '</details>';
     });
@@ -7460,7 +7668,7 @@ function renderItemStats() {
     var tests = (window.discoveredTestSheets || []).filter(function(t) { return meta[t]; });
     if (!tests.length) {
         sel.innerHTML = '';
-        box.innerHTML = '<p style="color: #666;">문항 데이터가 있는 시험이 없습니다. (OMR 성적처리 프로그램으로 처리한 시험만 나옵니다)</p>';
+        box.innerHTML = '<p style="color: #8C8C8C;">문항 데이터가 있는 시험이 없습니다. (OMR 성적처리 프로그램으로 처리한 시험만 나옵니다)</p>';
         return;
     }
     var cur = tests.indexOf(sel.value) !== -1 ? sel.value : tests[tests.length - 1];
@@ -7476,7 +7684,7 @@ function renderItemStats() {
     var pct = function(v) { return n ? Math.round(v * 100 / n) : 0; };
 
     var html = '<p>응시 ' + n + '명</p><table style="width: 100%; border-collapse: collapse; font-size: 0.88em; text-align: center;">' +
-        '<thead><tr style="background: #f3f3f8;"><th style="padding: 4px;">번호</th><th>영역</th><th>유형</th><th>정답</th><th>정답률</th>' +
+        '<thead><tr style="background: #FFFFFF;"><th style="padding: 4px;">번호</th><th>영역</th><th>유형</th><th>정답</th><th>정답률</th>' +
         '<th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>무응답</th></tr></thead><tbody>';
     meta[cur].forEach(function(it, i) {
         var cnt = [0, 0, 0, 0, 0, 0], ok = 0;
@@ -7487,16 +7695,69 @@ function renderItemStats() {
         });
         var keys = it.ans.replace(/\s/g, '').split(',');
         var r = pct(ok);
-        html += '<tr style="border-bottom: 1px solid #eee;"><td style="padding: 4px;">' + it.n + '</td><td>' + escHtml(it.area) +
+        html += '<tr style="border-bottom: 1px solid #EFEFEF;"><td style="padding: 4px;">' + it.n + '</td><td>' + escHtml(it.area) +
             '</td><td>' + escHtml(it.type) + '</td><td>' + keys.map(function(v) { return CIRCLED[v] || v; }).join(' ') +
-            '</td><td style="font-weight: bold; color: ' + (r < 40 ? '#e04848' : '#333') + ';">' + r + '%</td>';
+            '</td><td style="font-weight: bold; color: ' + (r < 40 ? '#D4271C' : '#141414') + ';">' + r + '%</td>';
         for (var c = 1; c <= 5; c++) {
             var on = keys.indexOf(String(c)) !== -1;
-            html += '<td style="' + (on ? 'background: #e6f6ec; font-weight: bold;' : '') + '">' + pct(cnt[c]) + '%</td>';
+            html += '<td style="' + (on ? 'background: #FFFFFF; font-weight: bold;' : '') + '">' + pct(cnt[c]) + '%</td>';
         }
         html += '<td>' + pct(cnt[0]) + '%</td></tr>';
     });
     box.innerHTML = html + '</tbody></table>';
+}
+
+// ===== 새 디자인: 결과 첫머리(큰 등급 + 회차 목록), 첫 화면 D-day, 차트 색 =====
+function gradeOf(test, g) {
+    var grade = parseInt(g.grade);
+    if (!grade && window.gradeCuts && window.gradeCuts[test]) grade = calculateGradeFromCut(g.score, test, g.subjectType);
+    if (!grade && g.score !== undefined && g.score !== '') grade = getGradeFromPercentile(calculatePercentile(g.score, g.subjectType, test));
+    return grade || '-';
+}
+
+function buildSpread(student) {
+    var tests = (window.discoveredTestSheets || Object.keys(student.grades)).filter(function(t) { return student.grades[t]; });
+    if (!tests.length) return '';
+    var last = tests[tests.length - 1], g = student.grades[last];
+    var scores = tests.map(function(t) { return parseFloat(student.grades[t].score) || 0; });
+    var grades = tests.map(function(t) { return gradeOf(t, student.grades[t]); }).filter(function(x) { return x !== '-'; });
+    var avg = Math.round(scores.reduce(function(a, b) { return a + b; }, 0) / scores.length);
+    var diff = scores.length >= 2 ? scores[scores.length - 1] - scores[scores.length - 2] : null;
+    var html = '<div class="spread"><div class="big"><span class="label">LATEST GRADE · ' + escHtml(last) + '</span>' +
+        '<div class="num">' + gradeOf(last, g) + '<span>등급</span></div><div class="line2">' +
+        '<div class="stat"><div class="k">점수</div><div class="v">' + escHtml(g.score) + '</div></div>' +
+        '<div class="stat"><div class="k">평균 점수</div><div class="v">' + avg + '</div></div>' +
+        '<div class="stat"><div class="k">최고 등급</div><div class="v">' + (grades.length ? Math.min.apply(null, grades) : '-') + '</div></div>' +
+        (diff !== null ? '<div class="stat"><div class="k">지난 회차보다</div><div class="v' + (diff > 0 ? ' up' : '') + '">' +
+            (diff > 0 ? '+' + diff : diff < 0 ? '−' + Math.abs(diff) : '±0') + '</div></div>' : '') +
+        '</div></div><div class="tests" aria-label="회차별 성적">';
+    tests.slice().reverse().forEach(function(t, i) {
+        var x = student.grades[t];
+        var no = String(tests.length - i).padStart(2, '0');
+        html += '<div class="row' + (i === 0 ? ' now' : '') + '"><span class="n">' + no + '</span><div style="width:100%">' +
+            '<div class="t">' + escHtml(t) + '<em>' + escHtml(x.score) + '</em></div>' +
+            '<div class="d">' + gradeOf(t, x) + '등급' + (x.source ? ' · ' + escHtml(x.source) : '') + '</div></div></div>';
+    });
+    return html + '</div></div>';
+}
+
+function fillHero() {
+    var el = document.getElementById('heroDday');
+    if (!el) return;
+    var d = calculateDday();
+    el.textContent = d.days;
+    document.getElementById('heroDdaySub').textContent =
+        d.examDate.toLocaleDateString('ko-KR', {year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'}) + ' · 남은 주차 ' + d.weeks + '주';
+}
+document.addEventListener('DOMContentLoaded', fillHero);
+
+if (typeof Chart !== 'undefined') {
+    Chart.defaults.font.family = "'Nanum Gothic','NanumGothic',sans-serif";
+    Chart.defaults.color = '#8C8C8C';
+    Chart.defaults.borderColor = '#EDEDED';
+    Chart.defaults.elements.line.tension = 0;
+    Chart.defaults.plugins.legend.labels.boxWidth = 14;
+    Chart.defaults.plugins.legend.labels.boxHeight = 2;
 }
     </script>
 
