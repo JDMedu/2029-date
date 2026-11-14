@@ -2165,6 +2165,13 @@ css
                     <button class="upload-btn" onclick="document.getElementById('fileInput').click()">파일 선택</button>
                     <button class="upload-btn" onclick="processFileAndUpload()" id="processBtn" disabled>GitHub에 업로드</button>
                 </div>
+
+                <div class="data-summary" style="display: block; margin-top: 20px;">
+                    <h3>🧮 문항별 정답률 · 선지 선택 비율</h3>
+                    <label for="itemTestSelect">시험 </label>
+                    <select id="itemTestSelect" onchange="renderItemStats()"></select>
+                    <div id="itemStatsTable" style="overflow-x: auto; margin-top: 10px;"></div>
+                </div>
             </div>
             
             <div class="progress" id="progressContainer">
@@ -3660,6 +3667,8 @@ if (scores.length >= 3) {
     if (subjectMasters.length >= 3) {
         badges.push({ icon: "🎓", text: "국어 올라운더", type: "subject-master", isNew: true });
     }
+    if (window.itemMeta) badges = badges.concat(typeBadges(student));  // 문제 유형 뱃지
+
     if (subjectMasters.length >= 5) {
         badges.push({ icon: "📚", text: "국어 마에스트로", type: "subject-master", isNew: true });
     }
@@ -5126,6 +5135,9 @@ maxScores = Object.assign({}, maxScores, data.maxScores || {});
 window.gradeCuts = data.gradeCuts || {};
 window.discoveredTestSheets = data.testSheets || [];
 window.attendanceToNameMap = data.attendanceMap || {};
+window.itemMeta = data.itemMeta || {};
+_itemStatCache = {};
+renderItemStats();
                     
                     var studentCount = Object.keys(studentByNumber).length;
                     console.log('로드된 학생 수:', studentCount);
@@ -5277,6 +5289,7 @@ window.attendanceToNameMap = data.attendanceMap || {};
     gradeCuts: window.gradeCuts || {},
     testSheets: window.discoveredTestSheets,
     attendanceMap: window.attendanceToNameMap,
+    itemMeta: window.itemMeta || {},
     lastUpdated: new Date().toISOString()
 };
                     
@@ -5485,7 +5498,8 @@ function calculateGradeFromCut(score, testName, subjectType) {
             for (var i = 0; i < allSheetNames.length; i++) {
                 var sheetName = allSheetNames[i];
                 if ((sheetName.includes('모클') || sheetName.includes('이감') || sheetName.includes('모의고사') || sheetName.includes('진단평가')) && 
-                    !sheetName.includes('성적표') && sheetName !== '등급컷' && sheetName !== '출결번호') {
+                    !sheetName.includes('성적표') && sheetName !== '등급컷' && sheetName !== '출결번호' &&
+                    sheetName.indexOf('응답_') !== 0 && sheetName.indexOf('문항_') !== 0) {
                     testSheetNames.push(sheetName);
                 }
             }
@@ -5569,7 +5583,7 @@ for (var s = 0; s < testSheetNames.length; s++) {
             finalGrade = calculateGradeFromCut(scoreFromSheet, sheetName, subjectTypeFromSheet);
             console.log('  등급(등급컷):', finalGrade, '점수:', scoreFromSheet);
         }
-        else if (gradeFromSheet && gradeFromSheet !== '' && gradeFromSheet !== null) {
+        else if (gradeFromSheet !== '' && gradeFromSheet !== null && gradeFromSheet !== undefined && !isNaN(parseInt(gradeFromSheet))) {  // C열이 숫자일 때만(고1은 반 이름이 들어 있음)
             finalGrade = parseInt(gradeFromSheet);
             console.log('  등급(엑셀C열):', finalGrade);
         }
@@ -5589,6 +5603,33 @@ for (var s = 0; s < testSheetNames.length; s++) {
         };
     }  // ⭐⭐⭐ 여기 추가! (for i 루프 닫기) ⭐⭐⭐
 }  // ⭐⭐⭐ 여기 추가! (for s 루프 닫기) ⭐⭐⭐
+
+// 6-1. 문항표(문항_ 시트)와 학생 응답(응답_ 시트) — OMR 성적처리 프로그램이 만든 시트
+window.itemMeta = {};
+_itemStatCache = {};
+allSheetNames.forEach(function(sn) {
+    if (sn.indexOf('문항_') !== 0) return;
+    var rows = XLSX.utils.sheet_to_json(workbook.Sheets[sn], {header: 1});
+    var h = (rows[0] || []).map(function(x) { return String(x || '').trim(); });
+    var c = {n: h.indexOf('번호'), ans: h.indexOf('정답'), pt: h.indexOf('배점'), area: h.indexOf('영역'), type: h.indexOf('유형')};
+    if (c.n < 0 || c.ans < 0) { console.warn('문항표 열 없음:', sn); return; }
+    window.itemMeta[sn.slice(3)] = rows.slice(1).filter(function(r) { return r && r[c.n] !== undefined && r[c.n] !== ''; })
+        .map(function(r) {
+            return {n: Number(r[c.n]), ans: String(r[c.ans]), pt: Number(r[c.pt]) || 0,
+                    area: String(r[c.area] || '').trim(), type: String(r[c.type] || '').trim()};
+        });
+});
+allSheetNames.forEach(function(sn) {
+    if (sn.indexOf('응답_') !== 0) return;
+    var test = sn.slice(3);
+    var rows = XLSX.utils.sheet_to_json(workbook.Sheets[sn], {header: 1});
+    for (var i = 1; i < rows.length; i++) {
+        var r = rows[i];
+        if (!r || !r[0] || !studentsByName[r[0]] || !studentsByName[r[0]].grades[test]) continue;
+        studentsByName[r[0]].grades[test].answers = String(r[2] || '');
+    }
+});
+console.log('문항표 시험:', Object.keys(window.itemMeta));
 
 // 7. 최종 데이터 구성
 studentByNumber = {};
@@ -5711,6 +5752,7 @@ function extractMaxScores(workbook, testSheetNames) {
             
             gridDiv.innerHTML = html;
             summaryDiv.style.display = 'block';
+            renderItemStats();
         }
         
         function updateDataStatus(message, isSuccess, lastUpdated) {
@@ -5789,6 +5831,7 @@ function extractMaxScores(workbook, testSheetNames) {
             // 그래프 생성 (약간의 지연 후)
             setTimeout(function() {
                 createChart(student);
+                createTypeTrendChart(student);
             }, 100);
             
         }
@@ -5808,7 +5851,8 @@ function extractMaxScores(workbook, testSheetNames) {
                 '</div></div>' +
                 displayTeacherComment(student.attendanceNumber) +  /* ⭐ 이 줄 추가 ⭐ */
                displayStudyFortune(student.name) +
-                displayDashboard(student);
+                displayDashboard(student) +
+                displayTypeAnalysis(student);
             
                    // 🆕 학습 계획서 섹션 표시
 document.getElementById('studyPlanSection').style.display = 'block';
@@ -7190,6 +7234,270 @@ function toggleSummaryTable() {
     }
 }
         
+
+// ===== 문제 유형별 분석 (OMR 성적처리 프로그램이 만든 응답_·문항_ 시트) =====
+var CIRCLED = ['', '①', '②', '③', '④', '⑤'];
+
+function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+        return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c];
+    });
+}
+
+function typeGroup(area) {
+    if (/^독서/.test(area)) return '독서';
+    if (/^문학/.test(area)) return '문학';
+    if (/문법|언어/.test(area) && !/화법/.test(area)) return '문법';
+    if (/화법|작문|매체/.test(area)) return '화작';
+    return '기타';
+}
+
+function isCorrect(mark, item) {
+    return item.ans.replace(/\s/g, '').split(',').indexOf(mark) !== -1;
+}
+
+// 학생 한 명(또는 여러 명)의 유형별 맞은 수/문항 수
+function typeStats(students) {
+    var meta = window.itemMeta || {}, out = {};
+    students.forEach(function(st) {
+        Object.keys(st.grades || {}).forEach(function(test) {
+            var a = st.grades[test].answers, items = meta[test];
+            if (!a || !items) return;
+            items.forEach(function(it, i) {
+                if (!it.type) return;
+                var key = typeGroup(it.area) + '|' + it.type;
+                var s = out[key] || (out[key] = {group: typeGroup(it.area), type: it.type, ok: 0, total: 0});
+                s.total++;
+                if (isCorrect(a.charAt(i), it)) s.ok++;
+            });
+        });
+    });
+    return out;
+}
+
+// 시험 하나의 문항별 정답률과 선지별 선택 비율 (응답이 있는 전체 학생 기준)
+var _itemStatCache = {};
+function itemStats(test) {
+    if (_itemStatCache[test]) return _itemStatCache[test];
+    var items = (window.itemMeta || {})[test] || [];
+    var answers = Object.keys(studentByNumber).map(function(k) {
+        var g = studentByNumber[k].grades[test];
+        return g && g.answers;
+    }).filter(Boolean);
+    var n = answers.length;
+    var out = items.map(function(it, i) {
+        var pick = {}, ok = 0;
+        answers.forEach(function(a) {
+            var m = a.charAt(i);
+            pick[m] = (pick[m] || 0) + 1;
+            if (isCorrect(m, it)) ok++;
+        });
+        return {rate: n ? Math.round(ok * 100 / n) : 0, pick: pick, n: n};
+    });
+    _itemStatCache[test] = out;
+    return out;
+}
+
+// 유형 묶음(독서·문학·화작·문법)별 회차 정답률
+function groupTrend(student) {
+    var meta = window.itemMeta || {}, groups = ['독서', '문학', '화작', '문법'];
+    var tests = (window.discoveredTestSheets || []).filter(function(t) {
+        return student.grades[t] && student.grades[t].answers && meta[t];
+    });
+    var series = {};
+    groups.forEach(function(g) { series[g] = []; });
+    tests.forEach(function(t) {
+        var a = student.grades[t].answers, cnt = {};
+        meta[t].forEach(function(it, i) {
+            var g = typeGroup(it.area);
+            if (!series[g]) return;
+            var c = cnt[g] || (cnt[g] = {ok: 0, total: 0});
+            c.total++;
+            if (isCorrect(a.charAt(i), it)) c.ok++;
+        });
+        groups.forEach(function(g) {
+            series[g].push(cnt[g] ? Math.round(cnt[g].ok * 100 / cnt[g].total) : null);
+        });
+    });
+    return {tests: tests, series: series};
+}
+
+function createTypeTrendChart(student) {
+    var canvas = document.getElementById('typeTrend_' + student.attendanceNumber);
+    if (!canvas || typeof Chart === 'undefined') return;
+    var tr = groupTrend(student);
+    var colors = {'독서': '#3366cc', '문학': '#dc3912', '화작': '#109618', '문법': '#ff9900'};
+    new Chart(canvas, {
+        type: 'line',
+        data: {
+            labels: tr.tests,
+            datasets: Object.keys(tr.series).filter(function(g) {
+                return tr.series[g].some(function(v) { return v !== null; });
+            }).map(function(g) {
+                return {label: g, data: tr.series[g], borderColor: colors[g], backgroundColor: colors[g],
+                        spanGaps: true, tension: 0.2};
+            })
+        },
+        options: {responsive: true, maintainAspectRatio: false,
+                  scales: {y: {min: 0, max: 100, ticks: {callback: function(v) { return v + '%'; }}}}}
+    });
+}
+
+// 유형 뱃지: 마스터(누적 5문항 이상 전부 정답), 약점 극복(이전 50% 미만 → 최근 시험 전부 정답)
+function typeBadges(student) {
+    var out = [], meta = window.itemMeta || {};
+    var mine = typeStats([student]);
+    Object.keys(mine).forEach(function(k) {
+        var s = mine[k];
+        if (s.total >= 5 && s.ok === s.total) {
+            var text = s.type + ' 마스터';
+            badgeDescriptions[text] = s.type + ' 유형 ' + s.total + '문항을 하나도 틀리지 않았습니다!';
+            out.push({icon: '🎯', text: text, type: 'subject-master', isNew: true});
+        }
+    });
+    var tests = (window.discoveredTestSheets || []).filter(function(t) {
+        return student.grades[t] && student.grades[t].answers && meta[t];
+    });
+    if (tests.length >= 2) {
+        var last = tests[tests.length - 1];
+        var before = Object.assign({}, student, {grades: {}});
+        tests.slice(0, -1).forEach(function(t) { before.grades[t] = student.grades[t]; });
+        var prev = typeStats([before]);
+        var now = typeStats([Object.assign({}, student, {grades: (function(g) { g[last] = student.grades[last]; return g; })({})})]);
+        var overcome = Object.keys(now).filter(function(k) {
+            return prev[k] && prev[k].total >= 3 && prev[k].ok / prev[k].total < 0.5 &&
+                   now[k].total >= 2 && now[k].ok === now[k].total;
+        });
+        if (overcome.length) {
+            var names = overcome.map(function(k) { return now[k].type; }).join(', ');
+            badgeDescriptions['약점 극복'] = '정답률 50%도 안 되던 ' + names + ' 유형을 ' + last + '에서 모두 맞혔습니다!';
+            out.push({icon: '💪', text: '약점 극복', type: 'total-growth', isNew: true});
+        }
+    }
+    return out;
+}
+
+function displayTypeAnalysis(student) {
+    var mine = typeStats([student]);
+    var keys = Object.keys(mine);
+    if (!keys.length) return '';
+    var everyone = typeStats(Object.keys(studentByNumber).map(function(k) { return studentByNumber[k]; }));
+    var rate = function(s) { return Math.round(s.ok * 100 / s.total); };
+    var meta = window.itemMeta || {};
+
+    var weak = keys.map(function(k) { return mine[k]; })
+        .filter(function(s) { return s.total >= 2; })
+        .sort(function(a, b) { return rate(a) - rate(b); }).slice(0, 3);
+
+    var html = '<div class="dashboard-card" style="margin: 25px 0; grid-column: 1 / -1;"><h3>🧩 문제 유형별 분석</h3>';
+    if (weak.length) {
+        html += '<p style="margin-bottom: 12px;"><strong>보완할 유형:</strong> ' +
+            weak.map(function(s) { return escHtml(s.type) + ' ' + rate(s) + '%'; }).join(' · ') + '</p>';
+    }
+    if (groupTrend(student).tests.length >= 2) {
+        html += '<div class="chart-container" style="height: 220px; margin-bottom: 10px;">' +
+            '<canvas id="typeTrend_' + student.attendanceNumber + '" aria-label="영역 묶음별 회차 정답률 그래프" role="img"></canvas></div>';
+    }
+    ['독서', '문학', '화작', '문법', '기타'].forEach(function(g) {
+        var list = keys.filter(function(k) { return mine[k].group === g; });
+        if (!list.length) return;
+        html += '<h4 style="margin: 14px 0 6px; color: #555;">' + g + '</h4>';
+        list.forEach(function(k) {
+            var s = mine[k], r = rate(s);
+            var avg = everyone[k] ? rate(everyone[k]) : null;
+            var color = r >= 80 ? '#2e9d5b' : r >= 50 ? '#f0a020' : '#e04848';
+            html += '<div style="display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 0.92em;">' +
+                '<span style="width: 140px; flex-shrink: 0;">' + escHtml(s.type) + '</span>' +
+                '<div role="img" aria-label="' + escHtml(s.type) + ' 정답률 ' + r + '%' + (avg !== null ? ', 전체 평균 ' + avg + '%' : '') + '" ' +
+                'style="flex: 1; background: #eee; border-radius: 6px; height: 14px; position: relative;">' +
+                '<div style="width: ' + r + '%; height: 100%; border-radius: 6px; background: ' + color + ';"></div>' +
+                (avg !== null ? '<div style="position: absolute; top: -3px; bottom: -3px; left: ' + avg + '%; width: 2px; background: #333;"></div>' : '') +
+                '</div>' +
+                '<span style="width: 105px; text-align: right; flex-shrink: 0;">' + r + '% (' + s.ok + '/' + s.total + ')</span></div>';
+        });
+    });
+    html += '<p style="font-size: 0.8em; color: #666; margin-top: 6px;">막대 위 검은 선 = 전체 학생 평균</p>';
+
+    var tests = (window.discoveredTestSheets || []).filter(function(t) {
+        return student.grades[t] && student.grades[t].answers && meta[t];
+    }).reverse();
+    tests.forEach(function(t, idx) {
+        var a = student.grades[t].answers, st = itemStats(t);
+        var wrong = meta[t].map(function(it, i) { return {it: it, m: a.charAt(i), st: st[i]}; })
+            .filter(function(x) { return !isCorrect(x.m, x.it); });
+        var must = wrong.filter(function(x) { return x.st.rate >= 70; }).length;
+        html += '<details' + (idx === 0 ? ' open' : '') + ' style="margin-top: 12px;">' +
+            '<summary style="cursor: pointer; font-weight: 600;">' + escHtml(t) + ' — 틀린 문항 ' + wrong.length + '개' +
+            (must ? ' <span style="color: #d4271c;">(놓치면 안 되는 문제 ' + must + '개)</span>' : '') + '</summary>';
+        if (wrong.length) {
+            html += '<table style="width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 0.9em;">' +
+                '<thead><tr style="background: #f3f3f8;"><th style="padding: 4px;">번호</th><th>영역</th><th>유형</th><th>내 답</th><th>정답</th><th>전체 정답률</th><th>참고</th></tr></thead><tbody>' +
+                wrong.map(function(x) {
+                    var ans = x.it.ans.replace(/\s/g, '').split(',').map(function(v) { return CIRCLED[v] || v; }).join(' ');
+                    var easy = x.st.rate >= 70;
+                    var same = x.st.n ? Math.round((x.st.pick[x.m] || 0) * 100 / x.st.n) : 0;
+                    var note = [];
+                    if (easy) note.push('<strong style="color: #d4271c;">놓치면 안 되는 문제</strong>');
+                    if (CIRCLED[x.m] && x.st.n >= 3 && same >= 25) note.push('함정 선지 (' + same + '%가 같은 답)');
+                    return '<tr style="border-bottom: 1px solid #eee; text-align: center;' + (easy ? ' background: #fff4f3;' : '') + '"><td style="padding: 4px;">' + x.it.n + '</td><td>' +
+                        escHtml(x.it.area) + '</td><td>' + escHtml(x.it.type) + '</td><td>' +
+                        (CIRCLED[x.m] || '무응답') + '</td><td>' + ans + '</td><td>' + x.st.rate + '%</td><td style="text-align: left;">' +
+                        note.join(' · ') + '</td></tr>';
+                }).join('') + '</tbody></table>' +
+                '<p style="font-size: 0.8em; color: #666; margin-top: 4px;">놓치면 안 되는 문제 = 전체 정답률 70% 이상 · 함정 선지 = 같은 오답을 고른 학생 25% 이상</p>';
+        }
+        html += '</details>';
+    });
+    return html + '</div>';
+}
+
+// 관리자: 문항별 정답률·선지 선택 비율
+function renderItemStats() {
+    var sel = document.getElementById('itemTestSelect');
+    var box = document.getElementById('itemStatsTable');
+    if (!sel || !box) return;
+    var meta = window.itemMeta || {};
+    var tests = (window.discoveredTestSheets || []).filter(function(t) { return meta[t]; });
+    if (!tests.length) {
+        sel.innerHTML = '';
+        box.innerHTML = '<p style="color: #666;">문항 데이터가 있는 시험이 없습니다. (OMR 성적처리 프로그램으로 처리한 시험만 나옵니다)</p>';
+        return;
+    }
+    var cur = tests.indexOf(sel.value) !== -1 ? sel.value : tests[tests.length - 1];
+    sel.innerHTML = tests.map(function(t) {
+        return '<option value="' + escHtml(t) + '"' + (t === cur ? ' selected' : '') + '>' + escHtml(t) + '</option>';
+    }).join('');
+
+    var answers = Object.keys(studentByNumber).map(function(k) {
+        var g = studentByNumber[k].grades[cur];
+        return g && g.answers;
+    }).filter(Boolean);
+    var n = answers.length;
+    var pct = function(v) { return n ? Math.round(v * 100 / n) : 0; };
+
+    var html = '<p>응시 ' + n + '명</p><table style="width: 100%; border-collapse: collapse; font-size: 0.88em; text-align: center;">' +
+        '<thead><tr style="background: #f3f3f8;"><th style="padding: 4px;">번호</th><th>영역</th><th>유형</th><th>정답</th><th>정답률</th>' +
+        '<th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>무응답</th></tr></thead><tbody>';
+    meta[cur].forEach(function(it, i) {
+        var cnt = [0, 0, 0, 0, 0, 0], ok = 0;
+        answers.forEach(function(a) {
+            var m = a.charAt(i);
+            cnt[/[1-5]/.test(m) ? Number(m) : 0]++;
+            if (isCorrect(m, it)) ok++;
+        });
+        var keys = it.ans.replace(/\s/g, '').split(',');
+        var r = pct(ok);
+        html += '<tr style="border-bottom: 1px solid #eee;"><td style="padding: 4px;">' + it.n + '</td><td>' + escHtml(it.area) +
+            '</td><td>' + escHtml(it.type) + '</td><td>' + keys.map(function(v) { return CIRCLED[v] || v; }).join(' ') +
+            '</td><td style="font-weight: bold; color: ' + (r < 40 ? '#e04848' : '#333') + ';">' + r + '%</td>';
+        for (var c = 1; c <= 5; c++) {
+            var on = keys.indexOf(String(c)) !== -1;
+            html += '<td style="' + (on ? 'background: #e6f6ec; font-weight: bold;' : '') + '">' + pct(cnt[c]) + '%</td>';
+        }
+        html += '<td>' + pct(cnt[0]) + '%</td></tr>';
+    });
+    box.innerHTML = html + '</tbody></table>';
+}
     </script>
 
 </div>
